@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anime Agenda App</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <style>
+    :root {
+      /* Base Colors (Dark Theme Defaults) */
+      --bg-primary: #0f172a; /* slate-900 */
+      --bg-secondary: #1e293b; /* slate-800 */
+      --bg-tertiary: #334155; /* slate-700 */
+      --surface-primary: #1e293b; /* slate-800 for cards */
+      --surface-secondary: #334155; /* slate-700 for inputs, secondary surfaces */
+      --surface-hover: #475569; /* slate-600 for hover */
+      
+      --text-primary: #e2e8f0; /* slate-200 */
+      --text-secondary: #94a3b8; /* slate-400 */
+      --text-tertiary: #64748b; /* slate-500 */
+      
+      --border-primary: #334155; /* slate-700 */
+      --border-secondary: #475569; /* slate-600 */
+      --border-focus: var(--accent-500);
+
+      --ring-focus: var(--accent-500);
+
+      /* Accent Colors (to be set by JavaScript) */
+      --accent-100: #e0f2fe;
+      --accent-200: #bae6fd;
+      --accent-300: #7dd3fc;
+      --accent-400: #38bdf8;
+      --accent-500: #0ea5e9; /* Main Accent */
+      --accent-600: #0284c7; /* CTA background */
+      --accent-700: #0369a1;
+      --accent-800: #075985;
+      --accent-900: #0c4a6e;
+
+      /* Semantic Accent Usage */
+      --accent-text: var(--accent-400);
+      --accent-bg-cta: var(--accent-600);
+      --accent-bg-cta-hover: var(--accent-500);
+      --accent-ring: var(--accent-500);
+      --accent-border: var(--accent-500);
+
+      /* Shadow Colors & Definitions */
+      --shadow-color-rgb: 0, 0, 0; /* Default to black for dark theme */
+      --shadow-opacity-md: 0.5;
+      --shadow-opacity-lg: 0.5;
+      --shadow-opacity-xl: 0.5;
+      
+      --shadow-md: 0 4px 6px -1px rgba(var(--shadow-color-rgb), var(--shadow-opacity-md)), 0 2px 4px -2px rgba(var(--shadow-color-rgb), var(--shadow-opacity-md));
+      --shadow-lg: 0 10px 15px -3px rgba(var(--shadow-color-rgb), var(--shadow-opacity-lg)), 0 4px 6px -4px rgba(var(--shadow-color-rgb), var(--shadow-opacity-lg));
+      --shadow-xl: 0 20px 25px -5px rgba(var(--shadow-color-rgb), var(--shadow-opacity-xl)), 0 8px 10px -6px rgba(var(--shadow-color-rgb), var(--shadow-opacity-xl));
+    }
+
+    .theme-light {
+      --bg-primary: #f8fafc; /* slate-50 */
+      --bg-secondary: #f1f5f9; /* slate-100 */
+      --bg-tertiary: #e2e8f0; /* slate-200 */
+      --surface-primary: #ffffff; /* white for cards */
+      --surface-secondary: #f1f5f9; /* slate-100 for inputs */
+      --surface-hover: #e2e8f0; /* slate-200 for hover */
+      
+      --text-primary: #1e293b; /* slate-800 */
+      --text-secondary: #475569; /* slate-600 */
+      --text-tertiary: #64748b; /* slate-500 */
+      
+      --border-primary: #cbd5e1; /* slate-300 */
+      --border-secondary: #94a3b8; /* slate-400 */
+      
+      --accent-text: var(--accent-600); /* Darker accent text for light bg */
+      --accent-bg-cta: var(--accent-500);
+      --accent-bg-cta-hover: var(--accent-600);
+
+      --shadow-color-rgb: 0, 0, 0; /* Still black, but opacity changes */
+      --shadow-opacity-md: 0.1;
+      --shadow-opacity-lg: 0.1;
+      --shadow-opacity-xl: 0.1;
+    }
+    
+    body {
+      background-color: var(--bg-secondary);
+      color: var(--text-primary);
+      font-family: sans-serif;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* Modal Animation */
+    @keyframes modal-appear {
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    .animate-modal-appear {
+      animation: modal-appear 0.3s forwards;
+    }
+
+    /* General Fade-in Animation (used for filters, item details, etc.) */
+    @keyframes fade-in {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in {
+      animation: fade-in 0.3s ease-out forwards;
+    }
+
+    /* Style for Material Symbols */
+    .material-symbols-outlined {
+      font-variation-settings:
+      'FILL' 0,
+      'wght' 400,
+      'GRAD' 0,
+      'opsz' 24;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      vertical-align: middle;
+    }
+
+    /* Tailwind arbitrary value support for CSS variables */
+    .bg-bg-primary { background-color: var(--bg-primary); }
+    .bg-bg-secondary { background-color: var(--bg-secondary); }
+    .bg-bg-tertiary { background-color: var(--bg-tertiary); }
+    .bg-surface-primary { background-color: var(--surface-primary); }
+    .bg-surface-secondary { background-color: var(--surface-secondary); }
+    .hover\:bg-surface-hover:hover { background-color: var(--surface-hover); }
+    
+    .text-text-primary { color: var(--text-primary); }
+    .text-text-secondary { color: var(--text-secondary); }
+    .text-text-tertiary { color: var(--text-tertiary); }
+    
+    .border-border-primary { border-color: var(--border-primary); }
+    .border-border-secondary { border-color: var(--border-secondary); }
+    .focus\:border-accent-border:focus { border-color: var(--accent-border); }
+
+    .text-accent { color: var(--accent-text); }
+    .bg-accent-cta { background-color: var(--accent-bg-cta); }
+    .hover\:bg-accent-cta-hover:hover { background-color: var(--accent-bg-cta-hover); }
+    .focus\:ring-accent-ring:focus { outline: 2px solid transparent; outline-offset: 2px; box-shadow: 0 0 0 2px var(--accent-ring); }
+    
+    .shadow-custom-md { box-shadow: var(--shadow-md); }
+    .shadow-custom-lg { box-shadow: var(--shadow-lg); }
+    .shadow-custom-xl { box-shadow: var(--shadow-xl); }
+    .hover\:shadow-accent-glow:hover { box-shadow: 0 0 15px 0px var(--accent-500); }
+
+    /* Scrollbar Hide Utility for Carousels */
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none; /* Safari and Chrome */
+    }
+    .scrollbar-hide {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+    }
+
+    /* Shimmer Animation for Skeletons */
+    @keyframes shimmer {
+      0% {
+        background-position: -1000px 0;
+      }
+      100% {
+        background-position: 1000px 0;
+      }
+    }
+    .animate-shimmer {
+      animation: shimmer 1.7s infinite linear;
+      background: linear-gradient(to right, 
+        var(--bg-tertiary) 20%, 
+        var(--surface-hover) 50%, /* Shimmer color */
+        var(--bg-tertiary) 80%);
+      background-size: 2000px 100%; /* Make background wider than element */
+    }
+
+    /* Line Clamp Utilities */
+    .line-clamp-1 {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+    }
+    .line-clamp-2 {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+    .line-clamp-3 {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+    }
+
+  </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.1.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "@google/genai": "https://esm.sh/@google/genai",
+    "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@^1"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
