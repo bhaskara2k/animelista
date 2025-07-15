@@ -1,7 +1,8 @@
 
 import { AniListMedia, AniListSearchResult, AniListMediaSort, AniListSeason, AniListPageInfo, AniListMediaFormat, AniListMediaStatus, AniListCharacter, AniListCharacterSearchResult } from '../types';
 
-const ANILIST_API_URL = 'https://graphql.anilist.co';
+// O URL agora aponta para nossa própria API de proxy (Serverless Function)
+const ANILIST_API_URL = '/api/anilist';
 
 const ANIME_QUERY = `
 query (
@@ -180,6 +181,7 @@ export const fetchAniListMedia = async (params: FetchAniListParams): Promise<{ m
         'Content-Type': 'application/json',
         'Accept': 'application/json',
       },
+      // Agora enviamos a query e as variáveis para o nosso próprio backend
       body: JSON.stringify({
         query: ANIME_QUERY,
         variables: variables,
@@ -188,15 +190,15 @@ export const fetchAniListMedia = async (params: FetchAniListParams): Promise<{ m
 
     if (!response.ok) {
       const errorBody = await response.text();
-      console.error("AniList API Error Response (not ok):", { status: response.status, statusText: response.statusText, body: errorBody, variables });
-      throw new Error(`AniList API request failed with status ${response.status}: ${response.statusText}. Body: ${errorBody}`);
+      console.error("Erro no proxy da API AniList:", { status: response.status, statusText: response.statusText, body: errorBody });
+      throw new Error(`O proxy da API AniList falhou com o status ${response.status}: ${response.statusText}. Corpo: ${errorBody}`);
     }
 
     const jsonResponse: AniListResponse = await response.json();
 
     if (jsonResponse.errors) {
-      console.error("AniList API GraphQL Errors:", { errors: jsonResponse.errors, variables });
-      throw new Error(`GraphQL Error from AniList API: ${jsonResponse.errors.map(e => e.message).join(', ')}`);
+      console.error("Erros GraphQL da API AniList (via proxy):", { errors: jsonResponse.errors, variables });
+      throw new Error(`Erro GraphQL da API AniList: ${jsonResponse.errors.map(e => e.message).join(', ')}`);
     }
 
     if (jsonResponse.data && jsonResponse.data.Page) {
@@ -208,13 +210,12 @@ export const fetchAniListMedia = async (params: FetchAniListParams): Promise<{ m
 
     return { media: [], pageInfo: { total: 0, currentPage: 1, lastPage:1, hasNextPage: false, perPage: perPage} };
   } catch (error: any) {
-    console.error("Error fetching from AniList API. URL:", ANILIST_API_URL, "Variables:", JSON.stringify(variables), "Error Details:", error);
+    console.error("Erro ao buscar da API AniList via proxy. URL:", ANILIST_API_URL, "Variáveis:", JSON.stringify(variables), "Detalhes do erro:", error);
+    // Erros de rede agora serão entre nosso frontend e nosso backend
     if (error instanceof TypeError && error.message.toLowerCase().includes("failed to fetch")) {
-        // This specific message often indicates network or CORS issues.
-        throw new Error(`Network error or CORS issue: ${error.message}. Check browser console, network connectivity, and ensure the AniList API is accessible from your current origin. URL: ${ANILIST_API_URL}`);
+        throw new Error(`Erro de rede ao contatar nosso proxy: ${error.message}. Verifique a conexão com a internet e o status do servidor.`);
     }
-    // Re-throw other errors or a generic one
-    throw new Error(`Failed to process AniList API request. Original error: ${error.message || String(error)}`);
+    throw new Error(`Falha ao processar a requisição da API AniList. Erro original: ${error.message || String(error)}`);
   }
 };
 
@@ -249,19 +250,19 @@ export const searchAniListCharacters = async (searchTerm: string, page: number =
         });
 
         if (!response.ok) {
-            throw new Error(`AniList character search failed with status ${response.status}`);
+            throw new Error(`Busca de personagens via proxy falhou com status ${response.status}`);
         }
 
         const jsonResponse: AniListCharacterResponse = await response.json();
 
         if (jsonResponse.errors) {
-            throw new Error(`GraphQL Error: ${jsonResponse.errors.map(e => e.message).join(', ')}`);
+            throw new Error(`Erro GraphQL: ${jsonResponse.errors.map(e => e.message).join(', ')}`);
         }
 
         return jsonResponse.data?.Page?.characters || [];
 
     } catch (error: any) {
-        console.error("Error fetching characters from AniList:", error);
-        throw new Error(`Failed to search for characters. ${error.message}`);
+        console.error("Erro ao buscar personagens da AniList via proxy:", error);
+        throw new Error(`Falha ao buscar personagens. ${error.message}`);
     }
 };
