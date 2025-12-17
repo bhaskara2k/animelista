@@ -1317,13 +1317,21 @@ const MainApp: React.FC = () => {
       </div>
 
 
-      <footer className="text-center mt-12 py-6 border-t border-border-primary">
-        <p className="text-text-tertiary text-sm">
-          Anime Agenda App &copy; {new Date().getFullYear()}. Feito com <span className="text-red-500">&hearts;</span> para fãs de anime.
-        </p>
-        <p className="text-xs text-text-tertiary mt-1">
-          Dados de animes fornecidos por <a href="https://anilist.co" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">AniList.co</a>.
-        </p>
+      <footer className="text-center mt-12 py-8 border-t border-white/10 bg-black/20 backdrop-blur-sm">
+        <div className="flex flex-col items-center gap-3">
+          <p className="text-gray-400 text-sm">
+            Anime Lista App &copy; {new Date().getFullYear()}. Feito com <span className="text-red-500 animate-pulse">&hearts;</span> para fãs de anime.
+          </p>
+
+          <a href="https://instagram.com/animelista.app" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-accent-400 hover:text-white transition-all duration-300 text-sm font-medium bg-white/5 hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-600 px-4 py-2 rounded-full border border-white/5 hover:border-transparent group shadow-lg hover:shadow-purple-500/20">
+            <span className="group-hover:scale-110 transition-transform duration-300">📸</span>
+            <span>Siga a gente: <span className="font-bold">@animelista.app</span></span>
+          </a>
+
+          <p className="text-xs text-gray-600 mt-2">
+            Dados de animes fornecidos por <a href="https://anilist.co" target="_blank" rel="noopener noreferrer" className="text-accent-500 hover:underline">AniList.co</a>.
+          </p>
+        </div>
       </footer>
     </div>
   );
