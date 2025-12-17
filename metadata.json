@@ -1,0 +1,6 @@
+{
+  "name": "Anime Agenda App com Perfil",
+  "description": "A React application to organize and track your favorite animes, built with TypeScript and Tailwind CSS.",
+  "requestFramePermissions": [],
+  "prompt": ""
+}
