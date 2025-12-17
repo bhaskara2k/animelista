@@ -896,6 +896,8 @@ const MainApp: React.FC = () => {
     animeList.filter(anime => anime.status === AnimeStatus.WATCHING),
     [animeList]);
 
+  const hasActiveBanner = useMemo(() => watchingAnimes.some(a => a.bannerImage || a.imageUrl), [watchingAnimes]);
+
 
   const handleNavigateMonth = (direction: 'prev' | 'next') => {
     setCurrentCalendarDate(prevDate => {
@@ -968,9 +970,6 @@ const MainApp: React.FC = () => {
   if (isLoadingData) {
     return <div className="fixed inset-0 bg-bg-primary flex items-center justify-center"><LoadingSpinner className="w-12 h-12 text-accent" /></div>;
   }
-
-
-  const hasActiveBanner = useMemo(() => watchingAnimes.some(a => a.bannerImage || a.imageUrl), [watchingAnimes]);
 
   return (
     <div className="text-text-primary transition-colors duration-300 min-h-screen pb-20">
@@ -1336,7 +1335,7 @@ const MainApp: React.FC = () => {
           </p>
         </div>
       </footer>
-    </div>
+    </div >
   );
 };
 
