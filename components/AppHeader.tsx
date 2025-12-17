@@ -24,8 +24,8 @@ const AppHeader: React.FC<AppHeaderProps> = ({ currentUser, scrolled = false, on
     return (
         <header
             className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 border-b border-transparent ${isScrolled
-                    ? 'bg-bg-primary/80 backdrop-blur-md border-white/5 py-3 shadow-lg'
-                    : 'bg-transparent py-5'
+                ? 'bg-bg-primary/80 backdrop-blur-md border-white/5 py-3 shadow-lg'
+                : 'bg-transparent py-5'
                 }`}
         >
             <div className="container mx-auto px-4 md:px-6 flex justify-between items-center">
@@ -36,7 +36,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({ currentUser, scrolled = false, on
                     </div>
                     <div className={`flex flex-col ${isScrolled ? 'opacity-100' : 'opacity-100'} transition-opacity`}>
                         <h1 className="text-lg md:text-2xl font-bold text-white tracking-tight leading-none">
-                            Anime<span className="text-accent-400">Agenda</span>
+                            Anime<span className="text-accent-400">Lista</span>
                         </h1>
                         {!isScrolled && currentUser && (
                             <span className="text-xs text-gray-400 font-medium hidden md:block">Bem-vindo de volta, {currentUser.username}</span>

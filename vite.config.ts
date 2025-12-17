@@ -14,7 +14,7 @@ export default defineConfig(({ mode }) => {
       react(),
       VitePWA({
         registerType: 'autoUpdate',
-        includeAssets: ['favicon.svg', 'robots.txt'], // favicon.svg is in public/
+        includeAssets: ['favicon.svg', 'robots.txt', 'apple-touch-icon.png', 'pwa-icon.png'], // favicon.svg is in public/
         manifest: {
           name: 'AnimeLista',
           short_name: 'AnimeLista',
@@ -27,9 +27,9 @@ export default defineConfig(({ mode }) => {
           start_url: '/',
           icons: [
             {
-              src: 'favicon.svg', // Browsers that support SVG favicons also support them in the manifest.
-              sizes: 'any',
-              type: 'image/svg+xml',
+              src: 'pwa-icon.png',
+              sizes: '512x512', // Assuming the user image is high res, letting browser scale down
+              type: 'image/png',
               purpose: 'any maskable'
             }
           ]
