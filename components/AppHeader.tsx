@@ -31,9 +31,11 @@ const AppHeader: React.FC<AppHeaderProps> = ({ currentUser, scrolled = false, on
             <div className="container mx-auto px-4 md:px-6 flex justify-between items-center">
                 {/* Logo Section */}
                 <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-gradient-to-br from-accent-400 to-accent-600 flex items-center justify-center shadow-accent-glow">
-                        <span className="text-white font-bold text-lg md:text-xl">A</span>
-                    </div>
+                    <img
+                        src="/logo-small.png"
+                        alt="Logo"
+                        className="w-8 h-8 md:w-10 md:h-10 object-contain drop-shadow-lg"
+                    />
                     <div className={`flex flex-col ${isScrolled ? 'opacity-100' : 'opacity-100'} transition-opacity`}>
                         <h1 className="text-lg md:text-2xl font-bold text-white tracking-tight leading-none">
                             Anime<span className="text-accent-400">Lista</span>
