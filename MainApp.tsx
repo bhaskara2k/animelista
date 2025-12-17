@@ -969,6 +969,9 @@ const MainApp: React.FC = () => {
     return <div className="fixed inset-0 bg-bg-primary flex items-center justify-center"><LoadingSpinner className="w-12 h-12 text-accent" /></div>;
   }
 
+
+  const hasActiveBanner = useMemo(() => watchingAnimes.some(a => a.bannerImage || a.imageUrl), [watchingAnimes]);
+
   return (
     <div className="text-text-primary transition-colors duration-300 min-h-screen pb-20">
       <ToastContainer
@@ -987,7 +990,7 @@ const MainApp: React.FC = () => {
         onUpdateEpisode={handleUpdateEpisode}
       />
 
-      <div className="container mx-auto px-4 py-8 relative z-10">
+      <div className={`container mx-auto px-4 py-8 relative z-10 ${!hasActiveBanner ? 'pt-24 md:pt-28' : ''}`}>
 
         {/* Premium Search Bar & Navigation - Streamlined & Icon-Only */}
         <div className="mb-8 p-4 glass-panel rounded-2xl shadow-2xl border border-white/10 flex flex-col xl:flex-row gap-4 items-center">
