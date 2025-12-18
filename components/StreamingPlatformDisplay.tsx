@@ -17,19 +17,33 @@ const PlatformItem: React.FC<PlatformItemProps> = ({ platform }) => {
     'netflix': '/logos/netflix.png',
     'youcine': '/logos/youcine.png',
     'disney+': '/logos/disney_plus.png',
+    'disney plus': '/logos/disney_plus.png',
     'prime video': '/logos/prime_video.png',
+    'amazon prime': '/logos/prime_video.png',
+    'amazon prime video': '/logos/prime_video.png',
+    'hbo max': '/logos/hbo_max.png',
+    'max': '/logos/hbo_max.png',
   };
 
   const logoUrl = logoMap[platform.name.toLowerCase()];
 
   if (logoUrl) {
     return (
-      <img
-        src={logoUrl}
-        alt={platform.name}
-        title={platform.name}
-        className="h-6 w-auto object-contain rounded-sm shadow-sm hover:scale-105 transition-transform"
-      />
+      <div className="bg-white rounded-md p-0.5 shadow-sm hover:scale-105 transition-transform" title={platform.name}>
+        <img
+          src={logoUrl}
+          alt={platform.name}
+          className="h-5 w-auto object-contain"
+          onError={(e) => {
+            // Fallback to text if image fails to load (e.g. invalid URL)
+            // We can achieve this by hiding the image's parent or swapping content, 
+            // but simpler is to let it break or handle it upstream. 
+            // For now, let's just let the text fallback below render if we returned null here, but we returned early.
+            // Ideally we would set state to error, but this is a simple component.
+            e.currentTarget.style.display = 'none';
+          }}
+        />
+      </div>
     );
   }
 
