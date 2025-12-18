@@ -12,6 +12,8 @@ interface StreamingPlatformDisplayProps {
 }
 
 const PlatformItem: React.FC<PlatformItemProps> = ({ platform }) => {
+  const [imgError, setImgError] = React.useState(false);
+
   const logoMap: Record<string, string> = {
     'crunchyroll': '/logos/crunchyroll.png',
     'netflix': '/logos/netflix.png',
@@ -25,23 +27,17 @@ const PlatformItem: React.FC<PlatformItemProps> = ({ platform }) => {
     'max': '/logos/hbo_max.png',
   };
 
-  const logoUrl = logoMap[platform.name.toLowerCase()];
+  const normalizedName = platform.name.toLowerCase().trim();
+  const logoUrl = logoMap[normalizedName];
 
-  if (logoUrl) {
+  if (logoUrl && !imgError) {
     return (
       <div className="bg-white rounded-md p-0.5 shadow-sm hover:scale-105 transition-transform" title={platform.name}>
         <img
-          src={logoUrl}
+          src={`${logoUrl}?v=3`}
           alt={platform.name}
           className="h-5 w-auto object-contain"
-          onError={(e) => {
-            // Fallback to text if image fails to load (e.g. invalid URL)
-            // We can achieve this by hiding the image's parent or swapping content, 
-            // but simpler is to let it break or handle it upstream. 
-            // For now, let's just let the text fallback below render if we returned null here, but we returned early.
-            // Ideally we would set state to error, but this is a simple component.
-            e.currentTarget.style.display = 'none';
-          }}
+          onError={() => setImgError(true)}
         />
       </div>
     );
