@@ -12,14 +12,35 @@ interface StreamingPlatformDisplayProps {
 }
 
 const PlatformItem: React.FC<PlatformItemProps> = ({ platform }) => {
+  const logoMap: Record<string, string> = {
+    'crunchyroll': '/logos/crunchyroll.png',
+    'netflix': '/logos/netflix.png',
+    'youcine': '/logos/youcine.png',
+    'disney+': '/logos/disney_plus.png',
+    'prime video': '/logos/prime_video.png',
+  };
+
+  const logoUrl = logoMap[platform.name.toLowerCase()];
+
+  if (logoUrl) {
+    return (
+      <img
+        src={logoUrl}
+        alt={platform.name}
+        title={platform.name}
+        className="h-6 w-auto object-contain rounded-sm shadow-sm hover:scale-105 transition-transform"
+      />
+    );
+  }
+
   return (
     <span
       title={platform.name}
       className="px-2.5 py-1 text-xs font-semibold rounded-md whitespace-nowrap shadow-sm"
-      style={{ 
-        backgroundColor: platform.bgColor, 
+      style={{
+        backgroundColor: platform.bgColor,
         color: platform.textColor,
-        border: platform.bgColor === '#FFFFFF' || platform.bgColor === '#ffffff' ? `1px solid ${platform.textColor === '#FFFFFF' || platform.textColor === '#ffffff' ? '#DDDDDD' : platform.textColor}` : 'none' // Add border for very light bg
+        border: platform.bgColor === '#FFFFFF' || platform.bgColor === '#ffffff' ? `1px solid ${platform.textColor === '#FFFFFF' || platform.textColor === '#ffffff' ? '#DDDDDD' : platform.textColor}` : 'none'
       }}
     >
       {platform.name}
