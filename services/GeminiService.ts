@@ -3,7 +3,7 @@
 import { GoogleGenAI, GenerateContentResponse } from "@google/genai";
 import { Anime, AnimeStatus, Recommendation } from '../types';
 
-const MODEL_NAME = 'gemini-2.5-flash-preview-04-17';
+const MODEL_NAME = 'gemini-flash-latest';
 
 /**
  * Translates text to the specified target language using the Gemini API.
@@ -15,7 +15,7 @@ export const translateText = async (text: string, targetLang: string = "pt-BR"):
   if (!text || text.trim() === "") {
     return "";
   }
-  
+
   if (!process.env.API_KEY) {
     console.error("Gemini API key is not configured. Translation skipped.");
     return text; // Return original text if API key is missing
@@ -30,7 +30,7 @@ export const translateText = async (text: string, targetLang: string = "pt-BR"):
       model: MODEL_NAME,
       contents: prompt,
     });
-    
+
     const translatedText = response.text;
 
     if (translatedText && translatedText.trim() !== "") {
@@ -82,7 +82,7 @@ export const getRecommendations = async (animeList: Anime[]): Promise<Recommenda
     - Não inclua NENHUM texto, explicação ou formatação de markdown (como \`\`\`json) fora do array JSON. A resposta deve ser apenas o array JSON puro.
     - Certifique-se de que o JSON não contenha vírgulas finais (trailing commas).
   `;
-  
+
   const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
   try {
@@ -113,7 +113,7 @@ export const getRecommendations = async (animeList: Anime[]): Promise<Recommenda
   } catch (error: any) {
     console.error("Error generating recommendations with Gemini API:", error);
     if (error.message.includes("JSON")) {
-       throw new Error("A IA retornou uma resposta em um formato inesperado. Tente novamente.");
+      throw new Error("A IA retornou uma resposta em um formato inesperado. Tente novamente.");
     }
     throw new Error(`Falha ao se comunicar com a IA: ${error.message}`);
   }
