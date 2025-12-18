@@ -1,5 +1,6 @@
 
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { XMarkIcon } from './Icons';
 
 type ModalSize = 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl';
@@ -43,9 +44,9 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, size = 
     }
   };
 
-  return (
+  const modalContent = (
     <div
-      className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-[100] transition-all duration-300 animate-fade-in"
+      className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-[9999] transition-all duration-300 animate-fade-in"
       onClick={handleBackdropClick}
     >
       <div
@@ -73,6 +74,8 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, size = 
       </div>
     </div>
   );
+
+  return ReactDOM.createPortal(modalContent, document.body);
 };
 
 export default Modal;
