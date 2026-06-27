@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/anilist",
+      "destination": "https://graphql.anilist.co"
+    }
+  ]
+}

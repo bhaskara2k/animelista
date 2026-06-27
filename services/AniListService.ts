@@ -1,7 +1,7 @@
 
 import { AniListMedia, AniListSearchResult, AniListMediaSort, AniListSeason, AniListPageInfo, AniListMediaFormat, AniListMediaStatus, AniListCharacter, AniListCharacterSearchResult } from '../types';
 
-const ANILIST_API_URL = 'https://graphql.anilist.co';
+const ANILIST_API_URL = '/api/anilist';
 
 const ANIME_QUERY = `
 query (
