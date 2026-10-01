@@ -87,6 +87,19 @@ const getPlatformBadgeStyle = (platformName: string, defaultBg?: string, default
   return { backgroundColor: defaultBg || '#334155', color: defaultText || '#FFFFFF' };
 };
 
+const getPlatformInitial = (platformName: string): string => {
+  const name = platformName.toLowerCase().trim();
+  if (name.includes('crunchyroll')) return 'C';
+  if (name.includes('disney')) return 'D+';
+  if (name.includes('netflix')) return 'N';
+  if (name.includes('prime') || name.includes('amazon')) return 'P';
+  if (name.includes('youtube')) return 'Y';
+  if (name.includes('youcine')) return 'U';
+  if (name.includes('anime onegai') || name.includes('onegai')) return 'O';
+  if (name.includes('hidive')) return 'H';
+  return platformName.charAt(0).toUpperCase();
+};
+
 const CalendarView: React.FC<CalendarViewProps> = ({
   animeList,
   currentDate,
@@ -334,38 +347,58 @@ const CalendarView: React.FC<CalendarViewProps> = ({
                         <div
                           key={anime.id}
                           onClick={() => onEditAnime(anime)}
-                          className="group/card relative overflow-hidden bg-slate-900/90 hover:bg-slate-850 p-2.5 rounded-xl border border-white/10 hover:border-accent-500/40 transition-all cursor-pointer shadow-md hover:scale-[1.02] flex flex-col gap-2"
+                          className="group/card relative overflow-hidden bg-slate-900/90 hover:bg-slate-850 p-2 sm:p-2.5 rounded-xl border border-white/10 hover:border-accent-500/40 transition-all cursor-pointer shadow-md hover:scale-[1.02] flex flex-col gap-1.5 sm:gap-2"
                         >
-                          <div className="flex gap-2.5 items-start">
-                            {/* Anime Cover */}
-                            <img
-                              src={anime.imageUrl || `https://picsum.photos/seed/${anime.id}/80/110`}
-                              alt={anime.title}
-                              className="w-12 h-16 object-cover rounded-lg flex-shrink-0 shadow-md ring-1 ring-white/10 group-hover/card:ring-accent-500/50"
-                            />
-                            {/* Title & info */}
-                            <div className="flex-grow min-w-0">
-                              <h4 className="text-xs font-bold text-white line-clamp-2 leading-tight group-hover/card:text-accent-400 transition-colors" title={anime.title}>
+                          <div className="flex flex-col sm:flex-row gap-2 sm:gap-2.5 items-center sm:items-start w-full">
+                            {/* Anime Cover with Floating EP Badge on Mobile */}
+                            <div className="relative w-full sm:w-12 h-24 sm:h-16 flex-shrink-0 overflow-hidden rounded-lg shadow-md ring-1 ring-white/10 group-hover/card:ring-accent-500/50">
+                              <img
+                                src={anime.imageUrl || `https://picsum.photos/seed/${anime.id}/80/110`}
+                                alt={anime.title}
+                                className="w-full h-full object-cover transition-transform duration-500 group-hover/card:scale-105"
+                                loading="lazy"
+                                decoding="async"
+                              />
+                              {/* Floating Premium EP Badge on Mobile */}
+                              <span className="sm:hidden absolute bottom-1 right-1 px-1.5 py-0.5 rounded bg-black/85 backdrop-blur-sm text-amber-300 border border-amber-400/40 text-[9px] font-black tracking-wider shadow-sm flex items-center gap-0.5">
+                                <span>EP</span>
+                                <span className="text-white font-extrabold">{anime.currentEpisode + 1}</span>
+                              </span>
+                            </div>
+
+                            {/* Title & Info */}
+                            <div className="flex-grow min-w-0 w-full text-center sm:text-left">
+                              <h4 
+                                className="text-[11px] sm:text-xs font-bold text-white line-clamp-2 leading-tight group-hover/card:text-accent-400 transition-colors" 
+                                title={anime.title}
+                              >
                                 {anime.title}
                               </h4>
-                              <p className="text-[10px] font-bold text-accent-300 mt-1">
-                                EP {anime.currentEpisode + 1}
-                              </p>
+                              {/* Desktop EP Badge */}
+                              <div className="hidden sm:flex items-center gap-1.5 mt-1">
+                                <span className="px-1.5 py-0.5 rounded bg-accent-500/20 text-accent-300 border border-accent-500/30 text-[10px] font-black tracking-wider">
+                                  EP {anime.currentEpisode + 1}
+                                </span>
+                              </div>
                             </div>
                           </div>
 
                           {/* Platform Solid Chip */}
                           {anime.streamingPlatforms && anime.streamingPlatforms.length > 0 && (
-                            <div className="flex flex-wrap gap-1 mt-auto pt-1 border-t border-white/5">
-                              {anime.streamingPlatforms.slice(0, 2).map((p) => {
+                            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1 mt-auto pt-1 border-t border-white/5 w-full">
+                              {anime.streamingPlatforms.slice(0, 3).map((p) => {
                                 const style = getPlatformBadgeStyle(p.name, p.bgColor, p.textColor);
                                 return (
                                   <span
                                     key={p.name}
                                     style={style}
-                                    className="px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wider"
+                                    title={p.name}
+                                    className="px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wider flex items-center justify-center min-w-[18px] text-center shadow-xs"
                                   >
-                                    {p.name}
+                                    {/* Mobile: initial letter only */}
+                                    <span className="sm:hidden font-black">{getPlatformInitial(p.name)}</span>
+                                    {/* Desktop: full name */}
+                                    <span className="hidden sm:inline">{p.name}</span>
                                   </span>
                                 );
                               })}
