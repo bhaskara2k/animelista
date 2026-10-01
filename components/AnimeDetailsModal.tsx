@@ -4,7 +4,7 @@ import { AniListMedia } from '../types';
 import Modal from './Modal';
 import LoadingSpinner from './LoadingSpinner';
 import { translateText } from '../services/GeminiService'; // Assuming GeminiService.ts is created
-import { XMarkIcon, PlusIcon } from './Icons';
+import { XMarkIcon, PlusIcon, FilmIcon } from './Icons';
 import { translateFormat, translateGenre, translateAniListStatus } from '../utils/translationUtils';
 import { translateAniListSeasonToPortuguese } from '../utils/seasonUtils';
 
@@ -101,6 +101,29 @@ const AnimeDetailsModal: React.FC<AnimeDetailsModalProps> = ({ isOpen, onClose, 
              <p className="text-text-secondary text-sm">Sinopse não disponível ou falha na tradução.</p>
           )}
         </div>
+
+        {/* Official Trailer from AniList */}
+        {anime.trailer?.site === 'youtube' && anime.trailer?.id && (
+          <div>
+            <h3 className="text-lg font-semibold text-accent mb-2 flex items-center gap-2">
+              <FilmIcon className="w-5 h-5 text-accent-400" opticalSize={20} />
+              <span>Trailer Oficial</span>
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-red-600/20 text-red-400 border border-red-500/30">
+                YouTube
+              </span>
+            </h3>
+            <div className="aspect-video w-full rounded-xl overflow-hidden shadow-2xl border border-white/10 bg-black/60">
+              <iframe
+                src={`https://www.youtube-nocookie.com/embed/${anime.trailer.id}`}
+                title={`Trailer oficial de ${anime.title.romaji || anime.title.english || ''}`}
+                className="w-full h-full border-0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                loading="lazy"
+              />
+            </div>
+          </div>
+        )}
 
         {anime.siteUrl && (
              <a 
