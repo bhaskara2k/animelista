@@ -1,0 +1,28 @@
+name: Supabase Keep-Alive
+
+on:
+  schedule:
+    # Executa a cada 3 dias às 12:00 UTC (09:00 no Horário de Brasília)
+    - cron: '0 12 */3 * *'
+  workflow_dispatch: # Permite disparar manualmente pela aba Actions do GitHub a qualquer momento
+
+jobs:
+  keep-alive:
+    name: Ping Supabase Database
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enviar consulta de keep-alive ao Supabase
+        run: |
+          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNxdmRoYWl5d3JlYXdzeGNrbXhtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEzMDc0NjcsImV4cCI6MjA2Njg4MzQ2N30.3FTm2lqdIm62_3O75dD0vCIRKyYHOjmDEbCJC6T2xl8' }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNxdmRoYWl5d3JlYXdzeGNrbXhtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEzMDc0NjcsImV4cCI6MjA2Njg4MzQ2N30.3FTm2lqdIm62_3O75dD0vCIRKyYHOjmDEbCJC6T2xl8' }}" \
+            "https://sqvdhaiywreawsxckmxm.supabase.co/rest/v1/profiles?select=id&limit=1")
+          
+          echo "Resposta HTTP do Supabase: $HTTP_STATUS"
+          if [ "$HTTP_STATUS" -ge 200 ] && [ "$HTTP_STATUS" -lt 400 ]; then
+            echo "✅ Supabase consultado com sucesso! Timer de inatividade zerado."
+            exit 0
+          else
+            echo "❌ Falha ao consultar Supabase, status retornado: $HTTP_STATUS"
+            exit 1
+          fi
