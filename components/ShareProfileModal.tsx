@@ -53,155 +53,267 @@ const ShareProfileModal: React.FC<ShareProfileModalProps> = ({
     setTimeout(() => setIsCopied(false), 2500);
   };
 
+  // Helper to safely load remote or blob images avoiding CORS/cache issues
+  const loadSafeImage = async (url: string): Promise<HTMLImageElement | null> => {
+    if (!url) return null;
+    return new Promise((resolve) => {
+      const separator = url.includes('?') ? '&' : '?';
+      const fetchUrl = `${url}${separator}cors_bust=${Date.now()}`;
+
+      // 1. Fetch as blob to create local same-origin URL (bypasses CORS canvas taint completely)
+      fetch(fetchUrl)
+        .then((res) => {
+          if (!res.ok) throw new Error('Fetch failed');
+          return res.blob();
+        })
+        .then((blob) => {
+          const objectUrl = URL.createObjectURL(blob);
+          const img = new Image();
+          img.onload = () => resolve(img);
+          img.onerror = () => resolve(null);
+          img.src = objectUrl;
+        })
+        .catch(() => {
+          // 2. Direct Image fallback with crossOrigin and cache buster
+          const img = new Image();
+          img.crossOrigin = 'anonymous';
+          img.onload = () => resolve(img);
+          img.onerror = () => resolve(null);
+          img.src = fetchUrl;
+        });
+    });
+  };
+
   // High-resolution Canvas generator for crisp download
-  const handleDownloadCard = () => {
+  const handleDownloadCard = async () => {
+    if (isDownloading) return;
     setIsDownloading(true);
 
-    const canvas = document.createElement('canvas');
-    canvas.width = 1080;
-    canvas.height = 1350; // 4:5 Instagram / Social aspect ratio
-    const ctx = canvas.getContext('2d');
+    try {
+      const canvas = document.createElement('canvas');
+      canvas.width = 1080;
+      canvas.height = 1350; // 4:5 Instagram / Social aspect ratio
+      const ctx = canvas.getContext('2d');
 
-    if (!ctx) {
-      setIsDownloading(false);
-      return;
-    }
+      if (!ctx) {
+        setIsDownloading(false);
+        return;
+      }
 
-    // 1. Background with radial dark gradients
-    const bgGrad = ctx.createLinearGradient(0, 0, 1080, 1350);
-    bgGrad.addColorStop(0, '#0f172a');
-    bgGrad.addColorStop(0.5, '#020617');
-    bgGrad.addColorStop(1, '#090d16');
-    ctx.fillStyle = bgGrad;
-    ctx.fillRect(0, 0, 1080, 1350);
+      // 1. Background with radial dark gradients
+      const bgGrad = ctx.createLinearGradient(0, 0, 1080, 1350);
+      bgGrad.addColorStop(0, '#0f172a');
+      bgGrad.addColorStop(0.5, '#020617');
+      bgGrad.addColorStop(1, '#090d16');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, 1080, 1350);
 
-    // Subtle glow circles
-    const glow1 = ctx.createRadialGradient(200, 200, 10, 200, 200, 600);
-    glow1.addColorStop(0, 'rgba(14, 165, 233, 0.15)');
-    glow1.addColorStop(1, 'transparent');
-    ctx.fillStyle = glow1;
-    ctx.fillRect(0, 0, 1080, 1350);
+      // Subtle glow circles
+      const glow1 = ctx.createRadialGradient(200, 200, 10, 200, 200, 600);
+      glow1.addColorStop(0, 'rgba(14, 165, 233, 0.15)');
+      glow1.addColorStop(1, 'transparent');
+      ctx.fillStyle = glow1;
+      ctx.fillRect(0, 0, 1080, 1350);
 
-    const glow2 = ctx.createRadialGradient(880, 1150, 10, 880, 1150, 600);
-    glow2.addColorStop(0, 'rgba(168, 85, 247, 0.15)');
-    glow2.addColorStop(1, 'transparent');
-    ctx.fillStyle = glow2;
-    ctx.fillRect(0, 0, 1080, 1350);
+      const glow2 = ctx.createRadialGradient(880, 1150, 10, 880, 1150, 600);
+      glow2.addColorStop(0, 'rgba(168, 85, 247, 0.15)');
+      glow2.addColorStop(1, 'transparent');
+      ctx.fillStyle = glow2;
+      ctx.fillRect(0, 0, 1080, 1350);
 
-    // 2. Card Border & Glass panel outline
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
-    ctx.lineWidth = 4;
-    ctx.strokeRect(40, 40, 1000, 1270);
+      // 2. Card Border & Glass panel outline
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+      ctx.lineWidth = 4;
+      ctx.strokeRect(40, 40, 1000, 1270);
 
-    // 3. Top Branding Header
-    ctx.fillStyle = '#38bdf8';
-    ctx.font = 'bold 36px sans-serif';
-    ctx.fillText('ANIMELISTA', 80, 120);
+      // 3. Top Branding Header
+      ctx.fillStyle = '#38bdf8';
+      ctx.font = 'bold 36px sans-serif';
+      ctx.fillText('ANIMELISTA', 80, 115);
 
-    ctx.fillStyle = '#94a3b8';
-    ctx.font = 'bold 22px sans-serif';
-    ctx.fillText('PASSEPORTE OTAKU', 80, 155);
-
-    // 4. User Info Section
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 54px sans-serif';
-    ctx.fillText(user.username, 80, 260);
-
-    ctx.fillStyle = '#f59e0b';
-    ctx.font = 'bold 28px sans-serif';
-    ctx.fillText(`NÍVEL ${user.level || 1} • ${currentRank.toUpperCase()}`, 80, 310);
-
-    // 5. KPI Stats Grid (4 boxes)
-    const kpis = [
-      { label: 'ANIMES', val: String(stats?.totalAnimes || animes.length || 0) },
-      { label: 'EPISÓDIOS', val: String(stats?.totalEpisodesWatched || 0) },
-      { label: 'TEMPO GASTO', val: timeWatched },
-      { label: 'NOTA MÉDIA', val: stats?.averageRating ? `${stats.averageRating.toFixed(1)} ★` : 'N/A' },
-    ];
-
-    const boxW = 440;
-    const boxH = 140;
-    const boxGap = 40;
-    const startX = 80;
-    const startY = 380;
-
-    kpis.forEach((kpi, idx) => {
-      const col = idx % 2;
-      const row = Math.floor(idx / 2);
-      const x = startX + col * (boxW + boxGap);
-      const y = startY + row * (boxH + 30);
-
-      // Box background
-      ctx.fillStyle = 'rgba(30, 41, 59, 0.7)';
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.roundRect(x, y, boxW, boxH, 16);
-      ctx.fill();
-      ctx.stroke();
-
-      // Box labels
       ctx.fillStyle = '#94a3b8';
       ctx.font = 'bold 20px sans-serif';
-      ctx.fillText(kpi.label, x + 30, y + 48);
+      ctx.fillText('PASSAPORTE OTAKU', 80, 148);
 
+      // Top spark icon / star
+      ctx.fillStyle = '#f59e0b';
+      ctx.font = 'bold 36px sans-serif';
+      ctx.fillText('✦', 960, 130);
+
+      // 4. User Info Section (Avatar Badge + Name + Level/Rank)
+      const avatarX = 80;
+      const avatarY = 195;
+      const avatarSize = 96;
+      const avatarRadius = 24;
+
+      // Outer ring
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.roundRect(avatarX, avatarY, avatarSize, avatarSize, avatarRadius);
+      ctx.stroke();
+
+      // Check if user has an image avatar
+      const userAvatarUrl = 'avatarId' in user ? user.avatarId : user.avatar_id;
+      let avatarImg: HTMLImageElement | null = null;
+      if (userAvatarUrl && userAvatarUrl.startsWith('http')) {
+        avatarImg = await loadSafeImage(userAvatarUrl);
+      }
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.roundRect(avatarX, avatarY, avatarSize, avatarSize, avatarRadius);
+      ctx.clip();
+
+      if (avatarImg) {
+        ctx.drawImage(avatarImg, avatarX, avatarY, avatarSize, avatarSize);
+      } else {
+        // Gradient matching app hero (accent-600 to purple-600)
+        const avGrad = ctx.createLinearGradient(avatarX, avatarY, avatarX + avatarSize, avatarY + avatarSize);
+        avGrad.addColorStop(0, '#4f46e5');
+        avGrad.addColorStop(1, '#9333ea');
+        ctx.fillStyle = avGrad;
+        ctx.fillRect(avatarX, avatarY, avatarSize, avatarSize);
+
+        // Initial Letter (e.g. "B")
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 52px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(user.username.charAt(0).toUpperCase(), avatarX + avatarSize / 2, avatarY + avatarSize / 2 + 2);
+      }
+      ctx.restore();
+
+      // Reset text alignment
+      ctx.textAlign = 'start';
+      ctx.textBaseline = 'alphabetic';
+
+      // Username
       ctx.fillStyle = '#ffffff';
       ctx.font = 'bold 44px sans-serif';
-      ctx.fillText(kpi.val, x + 30, y + 105);
-    });
+      ctx.fillText(user.username, 196, 244);
 
-    // 6. Section "Destaques da Coleção"
-    const topY = 760;
-    ctx.fillStyle = '#cbd5e1';
-    ctx.font = 'bold 28px sans-serif';
-    ctx.fillText('DESTAQUES DA COLEÇÃO', 80, topY);
+      // Level and Rank
+      ctx.fillStyle = '#f59e0b';
+      ctx.font = 'bold 22px sans-serif';
+      ctx.fillText(`NÍVEL ${user.level || 1} • ${currentRank.toUpperCase()}`, 196, 282);
 
-    if (topAnimes.length > 0) {
-      const coverW = 280;
-      const coverH = 380;
-      const coverGap = 40;
+      // 5. KPI Stats Grid (4 boxes)
+      const kpis = [
+        { label: 'ANIMES', val: String(stats?.totalAnimes || animes.length || 0) },
+        { label: 'EPISÓDIOS', val: String(stats?.totalEpisodesWatched || 0) },
+        { label: 'TEMPO GASTO', val: timeWatched },
+        { label: 'NOTA MÉDIA', val: stats?.averageRating ? `${stats.averageRating.toFixed(1)} ★` : 'N/A' },
+      ];
 
-      let loadedImages = 0;
-      topAnimes.forEach((anime, i) => {
-        const img = new Image();
-        img.crossOrigin = 'anonymous';
-        img.src = anime.imageUrl || '';
-        img.onload = () => {
-          const imgX = 80 + i * (coverW + coverGap);
-          const imgY = topY + 40;
+      const boxW = 440;
+      const boxH = 135;
+      const boxGap = 40;
+      const startX = 80;
+      const startY = 325;
+
+      kpis.forEach((kpi, idx) => {
+        const col = idx % 2;
+        const row = Math.floor(idx / 2);
+        const x = startX + col * (boxW + boxGap);
+        const y = startY + row * (boxH + 25);
+
+        // Box background
+        ctx.fillStyle = 'rgba(30, 41, 59, 0.7)';
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.roundRect(x, y, boxW, boxH, 16);
+        ctx.fill();
+        ctx.stroke();
+
+        // Box labels
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = 'bold 20px sans-serif';
+        ctx.fillText(kpi.label, x + 30, y + 46);
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 44px sans-serif';
+        ctx.fillText(kpi.val, x + 30, y + 102);
+      });
+
+      // 6. Section "Destaques da Coleção"
+      const topY = 675;
+      ctx.fillStyle = '#cbd5e1';
+      ctx.font = 'bold 26px sans-serif';
+      ctx.fillText('DESTAQUES DA COLEÇÃO', 80, topY);
+
+      if (topAnimes.length > 0) {
+        const coverW = 280;
+        const coverH = 410;
+        const coverGap = 40;
+        const startCoverX = 80;
+        const coverY = topY + 30;
+
+        // Preload all anime covers safely in parallel
+        const coverPromises = topAnimes.map(anime =>
+          anime.imageUrl ? loadSafeImage(anime.imageUrl) : Promise.resolve(null)
+        );
+        const loadedCovers = await Promise.all(coverPromises);
+
+        for (let i = 0; i < topAnimes.length; i++) {
+          const anime = topAnimes[i];
+          const img = loadedCovers[i];
+          const imgX = startCoverX + i * (coverW + coverGap);
 
           ctx.save();
           ctx.beginPath();
-          ctx.roundRect(imgX, imgY, coverW, coverH, 16);
+          ctx.roundRect(imgX, coverY, coverW, coverH, 20);
           ctx.clip();
-          ctx.drawImage(img, imgX, imgY, coverW, coverH);
+
+          if (img) {
+            ctx.drawImage(img, imgX, coverY, coverW, coverH);
+          } else {
+            // Elegant fallback gradient card
+            const fallbackGrad = ctx.createLinearGradient(imgX, coverY, imgX + coverW, coverY + coverH);
+            fallbackGrad.addColorStop(0, '#1e293b');
+            fallbackGrad.addColorStop(1, '#0f172a');
+            ctx.fillStyle = fallbackGrad;
+            ctx.fillRect(imgX, coverY, coverW, coverH);
+
+            ctx.fillStyle = '#94a3b8';
+            ctx.font = 'bold 20px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(anime.title.slice(0, 20), imgX + coverW / 2, coverY + coverH / 2);
+            ctx.textAlign = 'start';
+          }
+
+          // Bottom shadow gradient for rating badge legibility
+          const overlayGrad = ctx.createLinearGradient(imgX, coverY + coverH - 80, imgX, coverY + coverH);
+          overlayGrad.addColorStop(0, 'transparent');
+          overlayGrad.addColorStop(1, 'rgba(2, 6, 23, 0.95)');
+          ctx.fillStyle = overlayGrad;
+          ctx.fillRect(imgX, coverY + coverH - 80, coverW, 80);
+
+          // Rating badge
+          if (anime.rating && anime.rating > 0) {
+            ctx.fillStyle = '#fbbf24';
+            ctx.font = 'bold 24px sans-serif';
+            ctx.fillText(`★ ${anime.rating}`, imgX + 20, coverY + coverH - 24);
+          }
+
           ctx.restore();
 
-          loadedImages++;
-          if (loadedImages === topAnimes.length) {
-            finishExport();
-          }
-        };
-        img.onerror = () => {
-          loadedImages++;
-          if (loadedImages === topAnimes.length) {
-            finishExport();
-          }
-        };
-      });
+          // Border around poster
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+          ctx.lineWidth = 3;
+          ctx.beginPath();
+          ctx.roundRect(imgX, coverY, coverW, coverH, 20);
+          ctx.stroke();
+        }
+      }
 
-      // Fallback timeout in case image loading hangs
-      setTimeout(() => finishExport(), 1500);
-    } else {
-      finishExport();
-    }
-
-    function finishExport() {
       // 7. Footer
       ctx.fillStyle = '#64748b';
       ctx.font = '22px sans-serif';
       ctx.fillText('Acompanhe seus animes em animelista.app', 80, 1260);
 
+      // Trigger download
       const dataUrl = canvas.toDataURL('image/png');
       const a = document.createElement('a');
       a.href = dataUrl;
@@ -209,6 +321,9 @@ const ShareProfileModal: React.FC<ShareProfileModalProps> = ({
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
+    } catch (err) {
+      console.error("Failed to generate profile card:", err);
+    } finally {
       setIsDownloading(false);
     }
   };
