@@ -105,6 +105,18 @@ export type AniListMediaSort =
   | 'FAVOURITES' | 'FAVOURITES_DESC';
 
 
+export interface AniListAiringEpisode {
+  airingAt: number; // Unix timestamp in seconds
+  timeUntilAiring: number;
+  episode: number;
+}
+
+export interface AniListTrailer {
+  id: string; // YouTube video ID or site-specific ID
+  site: string; // e.g. "youtube"
+  thumbnail?: string;
+}
+
 export interface AniListMedia {
   id: number;
   title: AniListTitle;
@@ -126,7 +138,9 @@ export interface AniListMedia {
   };
   streamingEpisodes?: AniListStreamingEpisode[]; 
   externalLinks?: AniListExternalLink[]; 
-  siteUrl?: string; 
+  siteUrl?: string;
+  nextAiringEpisode?: AniListAiringEpisode;
+  trailer?: AniListTrailer;
 }
 
 export interface AniListPageInfo {

@@ -75,6 +75,16 @@ query (
         language
       }
       siteUrl
+      nextAiringEpisode {
+        airingAt
+        timeUntilAiring
+        episode
+      }
+      trailer {
+        id
+        site
+        thumbnail
+      }
     }
   }
 }
@@ -265,3 +275,95 @@ export const searchAniListCharacters = async (searchTerm: string, page: number =
         throw new Error(`Failed to search for characters. ${error.message}`);
     }
 };
+
+const AIRING_CACHE_PREFIX = 'animelista_airing_';
+const AIRING_CACHE_TTL = 30 * 60 * 1000; // 30 minutes
+
+export interface AiringEpisodeInfo {
+  airingAt: number; // unix timestamp in seconds
+  episode: number;
+  timeUntilAiring?: number;
+}
+
+/**
+ * Searches AniList for the upcoming airing episode of a specific anime title.
+ * Uses localStorage cache to avoid repeated queries and respect rate limits.
+ */
+export const fetchNextAiringEpisodeByTitle = async (title: string): Promise<AiringEpisodeInfo | null> => {
+  if (!title || title.trim().length === 0) return null;
+
+  const cacheKey = `${AIRING_CACHE_PREFIX}${title.trim().toLowerCase()}`;
+
+  // Check cache first
+  try {
+    const cached = localStorage.getItem(cacheKey);
+    if (cached) {
+      const parsed = JSON.parse(cached);
+      // Valid if cached within TTL and hasn't already expired far in the past
+      if (Date.now() - parsed.timestamp < AIRING_CACHE_TTL) {
+        return parsed.data;
+      }
+    }
+  } catch (e) {
+    // Ignore localStorage parse errors
+  }
+
+  const query = `
+    query ($search: String) {
+      Media(search: $search, type: ANIME, status_in: [RELEASING, NOT_YET_RELEASED]) {
+        id
+        title {
+          romaji
+          english
+        }
+        nextAiringEpisode {
+          airingAt
+          timeUntilAiring
+          episode
+        }
+      }
+    }
+  `;
+
+  try {
+    const response = await fetch(ANILIST_API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({
+        query,
+        variables: { search: title.trim() },
+      }),
+    });
+
+    if (!response.ok) return null;
+
+    const json = await response.json();
+    const nextEpisode = json?.data?.Media?.nextAiringEpisode || null;
+
+    if (nextEpisode) {
+      const data: AiringEpisodeInfo = {
+        airingAt: nextEpisode.airingAt,
+        episode: nextEpisode.episode,
+        timeUntilAiring: nextEpisode.timeUntilAiring,
+      };
+      try {
+        localStorage.setItem(cacheKey, JSON.stringify({ data, timestamp: Date.now() }));
+      } catch (e) {}
+      return data;
+    } else {
+      // Cache empty result for a shorter period (10 min) to avoid re-querying missing titles constantly
+      try {
+        localStorage.setItem(cacheKey, JSON.stringify({ data: null, timestamp: Date.now() - (AIRING_CACHE_TTL - 10 * 60 * 1000) }));
+      } catch (e) {}
+    }
+
+    return null;
+  } catch (error) {
+    console.warn(`Failed to fetch airing schedule for "${title}":`, error);
+    return null;
+  }
+};
+

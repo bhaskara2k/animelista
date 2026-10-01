@@ -192,3 +192,16 @@ export const EnvelopeIcon: React.FC<{ className?: string, opticalSize?: number }
 export const ChatBubbleBottomCenterTextIcon: React.FC<{ className?: string, opticalSize?: number }> = ({ className = "w-6 h-6", opticalSize }) => (
   <MaterialSymbol iconName="chat_bubble" className={className} opticalSize={opticalSize} />
 );
+
+export const ClockIcon: React.FC<{ className?: string, opticalSize?: number }> = ({ className = "w-5 h-5", opticalSize }) => (
+  <MaterialSymbol iconName="schedule" className={className} opticalSize={opticalSize} />
+);
+
+export const CalendarPlusIcon: React.FC<{ className?: string, opticalSize?: number }> = ({ className = "w-5 h-5", opticalSize }) => (
+  <MaterialSymbol iconName="calendar_add_on" className={className} opticalSize={opticalSize} />
+);
+
+export const ArrowTopRightOnSquareIcon: React.FC<{ className?: string, opticalSize?: number }> = ({ className = "w-4 h-4", opticalSize }) => (
+  <MaterialSymbol iconName="open_in_new" className={className} opticalSize={opticalSize} />
+);
+
