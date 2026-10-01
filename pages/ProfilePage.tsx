@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { FullPublicProfile, PublicUser, Anime, UserAchievement, AnimeStatus, StatisticsData, ViewMode, ListDensityOption } from '../types';
+import { FullPublicProfile, PublicUser, Anime, UserAchievement, AnimeStatus, StatisticsData, ViewMode, ListDensityOption, FeedEvent } from '../types';
 import * as SocialService from '../services/SocialService';
 import * as GamificationService from '../services/GamificationService';
 import { useAuth } from '../contexts/AuthContext';
@@ -11,7 +11,9 @@ import FavoriteAnimesDisplay from '../components/FavoriteAnimesDisplay';
 import StatisticsView from '../components/StatisticsView';
 import AchievementsView from '../components/AchievementsView';
 import AnimeList from '../components/AnimeList';
-import { ChevronLeftIcon, ChartPieIcon, TrophyIcon, StarIcon } from '../components/Icons';
+import FeedEventCard from '../components/FeedEventCard';
+import ShareProfileModal from '../components/ShareProfileModal';
+import { ChevronLeftIcon, ChartPieIcon, TrophyIcon, StarIcon, ClockIcon } from '../components/Icons';
 
 interface ProfilePageProps {
   username: string;
@@ -25,7 +27,10 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ username, onNavigateBack, onE
   const [profileData, setProfileData] = useState<FullPublicProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<'favorites' | 'stats' | 'achievements'>('favorites');
+  const [activeTab, setActiveTab] = useState<'favorites' | 'stats' | 'achievements' | 'timeline'>('favorites');
+  const [timelineEvents, setTimelineEvents] = useState<FeedEvent[]>([]);
+  const [isLoadingTimeline, setIsLoadingTimeline] = useState(false);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -42,6 +47,16 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ username, onNavigateBack, onE
     };
     fetchProfile();
   }, [username]);
+
+  useEffect(() => {
+    if (profileData && activeTab === 'timeline' && timelineEvents.length === 0) {
+      setIsLoadingTimeline(true);
+      SocialService.getUserTimelineEvents(profileData.profile.id)
+        .then(events => setTimelineEvents(events))
+        .catch(err => console.error("Error loading timeline:", err))
+        .finally(() => setIsLoadingTimeline(false));
+    }
+  }, [profileData, activeTab, timelineEvents.length]);
 
   const top5RankedAnimes = useMemo(() => {
     if (!profileData) return [];
@@ -140,6 +155,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ username, onNavigateBack, onE
         user={profile}
         rank={GamificationService.getRankForLevel(profile.level)}
         xpForNextLevel={GamificationService.calculateXpForNextLevel(profile.level)}
+        onShareProfile={() => setIsShareModalOpen(true)}
       />
 
       <div className="mt-8">
@@ -149,6 +165,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ username, onNavigateBack, onE
             { id: 'favorites', label: 'Favoritos', icon: StarIcon },
             { id: 'stats', label: 'Estatísticas', icon: ChartPieIcon },
             { id: 'achievements', label: 'Conquistas', icon: TrophyIcon },
+            { id: 'timeline', label: 'Linha do Tempo', icon: ClockIcon },
           ].map((tab) => {
             const isActive = activeTab === tab.id;
             const Icon = tab.icon;
@@ -182,8 +199,53 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ username, onNavigateBack, onE
           {activeTab === 'achievements' && (
             <AchievementsView userAchievements={achievements} achievementDefinitions={achievementDefinitions} />
           )}
+          {activeTab === 'timeline' && (
+            <div className="space-y-3">
+              <div className="flex items-center justify-between pb-3 border-b border-white/5 mb-4">
+                <div>
+                  <h3 className="text-base font-bold text-white flex items-center gap-2">
+                    <ClockIcon className="w-5 h-5 text-accent-400" />
+                    Histórico & Linha do Tempo
+                  </h3>
+                  <p className="text-xs text-gray-400">Episódios assistidos, conquistas e animes concluídos</p>
+                </div>
+              </div>
+
+              {isLoadingTimeline ? (
+                <div className="py-16 flex justify-center">
+                  <LoadingSpinner className="w-8 h-8" />
+                </div>
+              ) : timelineEvents.length === 0 ? (
+                <div className="text-center py-16 text-gray-500">
+                  <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-3">
+                    <ClockIcon className="w-6 h-6 text-gray-400" />
+                  </div>
+                  <p className="text-sm font-medium">Nenhuma atividade registrada ainda nesta linha do tempo.</p>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  {timelineEvents.map(event => (
+                    <FeedEventCard
+                      key={event.id}
+                      event={event}
+                      isCurrentUser={isOwnProfile}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
+
+      {/* Share Profile Card Modal */}
+      <ShareProfileModal
+        isOpen={isShareModalOpen}
+        onClose={() => setIsShareModalOpen(false)}
+        user={profile}
+        stats={stats}
+        animes={animes}
+      />
     </div>
   );
 };

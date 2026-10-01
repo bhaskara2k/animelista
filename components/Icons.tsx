@@ -205,3 +205,7 @@ export const ArrowTopRightOnSquareIcon: React.FC<{ className?: string, opticalSi
   <MaterialSymbol iconName="open_in_new" className={className} opticalSize={opticalSize} />
 );
 
+export const ShareIcon: React.FC<{ className?: string, opticalSize?: number }> = ({ className = "w-5 h-5", opticalSize }) => (
+  <MaterialSymbol iconName="share" className={className} opticalSize={opticalSize} />
+);
+

@@ -356,6 +356,7 @@ export interface Friendship {
 export enum FeedEventType {
   COMPLETED_ANIME = 'COMPLETED_ANIME',
   UNLOCKED_ACHIEVEMENT = 'UNLOCKED_ACHIEVEMENT',
+  WATCHED_EPISODE = 'WATCHED_EPISODE',
   // Future ideas:
   // STARTED_ANIME = 'STARTED_ANIME',
   // RATED_ANIME = 'RATED_ANIME',
@@ -370,6 +371,7 @@ export interface FeedEvent {
     anime_image_url?: string;
     achievement_title?: string;
     achievement_description?: string;
+    episode_number?: number;
   };
   created_at: string;
   // Hydrated from the user_id

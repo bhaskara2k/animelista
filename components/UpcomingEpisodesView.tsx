@@ -20,6 +20,8 @@ import {
 } from '../utils/calendarExportUtils';
 import { fetchNextAiringEpisodeByTitle } from '../services/AniListService';
 
+import { triggerHapticFeedback } from '../utils/hapticUtils';
+
 export interface UpcomingAnime {
   anime: Anime;
   nextEpisodeNumber: number;
@@ -72,6 +74,7 @@ const UpcomingAnimeCard: React.FC<UpcomingAnimeCardProps> = ({
   const { anime, nextEpisodeNumber, nextAiringDate, hasExactTime = false } = item;
   const [isCalendarMenuOpen, setIsCalendarMenuOpen] = useState(false);
   const [downloadSuccess, setDownloadSuccess] = useState(false);
+  const [showXpGain, setShowXpGain] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   // Close calendar menu on click outside
@@ -91,6 +94,9 @@ const UpcomingAnimeCard: React.FC<UpcomingAnimeCardProps> = ({
 
   const handleMarkAsWatched = (e: React.MouseEvent) => {
     e.stopPropagation();
+    triggerHapticFeedback(45);
+    setShowXpGain(true);
+    setTimeout(() => setShowXpGain(false), 1200);
     onUpdateEpisode(anime.id, nextEpisodeNumber);
   };
 
@@ -264,14 +270,21 @@ const UpcomingAnimeCard: React.FC<UpcomingAnimeCardProps> = ({
         {/* Bottom Actions Bar */}
         <div className="flex items-center gap-2 pt-2 border-t border-white/5">
           {/* Mark as Watched Button */}
-          <button
-            onClick={handleMarkAsWatched}
-            className="flex-1 bg-accent-600 hover:bg-accent-500 text-white text-xs font-bold py-2 px-3 rounded-lg shadow-md shadow-accent-600/25 transition-all flex items-center justify-center gap-1.5 active:scale-95"
-            title={`Marcar episódio ${nextEpisodeNumber} como assistido`}
-          >
-            <PlayIcon className="w-3.5 h-3.5 fill-white shrink-0" opticalSize={18} />
-            <span>VISTO (+1)</span>
-          </button>
+          <div className="relative flex-1">
+            <button
+              onClick={handleMarkAsWatched}
+              className="w-full bg-accent-600 hover:bg-accent-500 text-white text-xs font-bold py-2 px-3 rounded-lg shadow-md shadow-accent-600/25 transition-all flex items-center justify-center gap-1.5 active:scale-95"
+              title={`Marcar episódio ${nextEpisodeNumber} como assistido`}
+            >
+              <PlayIcon className="w-3.5 h-3.5 fill-white shrink-0" opticalSize={18} />
+              <span>VISTO (+1)</span>
+            </button>
+            {showXpGain && (
+              <span className="absolute -top-7 left-1/2 -translate-x-1/2 whitespace-nowrap bg-amber-400 text-slate-950 font-black text-[10px] px-2 py-0.5 rounded-full shadow-lg shadow-amber-400/50 animate-bounce z-30 pointer-events-none">
+                +1 EP (+20 XP) ✨
+              </span>
+            )}
+          </div>
 
           {/* Calendar Export Menu */}
           <div className="relative" ref={menuRef}>

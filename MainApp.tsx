@@ -480,6 +480,18 @@ const MainApp: React.FC = () => {
       handleBulkXpGain(totalXpGained);
     }
 
+    if (episodesIncreased > 0 && !isNowCompleted) {
+      try {
+        await SocialService.createFeedEvent(currentUser.id, FeedEventType.WATCHED_EPISODE, {
+          anime_title: updatedAnime.title,
+          anime_image_url: updatedAnime.imageUrl,
+          episode_number: updatedAnime.currentEpisode,
+        });
+      } catch (eventError) {
+        console.error("Failed to create watch feed event:", eventError);
+      }
+    }
+
     if (isNowCompleted && !wasCompleted) {
       try {
         await SocialService.createFeedEvent(currentUser.id, FeedEventType.COMPLETED_ANIME, {
@@ -1212,7 +1224,11 @@ const MainApp: React.FC = () => {
           />
         )}
         {viewMode === 'social' && (
-          <SocialPage onViewProfile={handleViewProfile} />
+          <SocialPage
+            onViewProfile={handleViewProfile}
+            animes={animeList}
+            stats={calculatedStats}
+          />
         )}
         {viewMode === 'profile' && profileViewUsername && (
           <ProfilePage

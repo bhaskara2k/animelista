@@ -6,6 +6,7 @@ import StreamingPlatformDisplay from './StreamingPlatformDisplay';
 import { PencilIcon, TrashIcon, PlusIcon, MinusIcon, ChevronDownIcon, ChevronUpIcon, EyeIcon, BellAlertIcon } from './Icons';
 import { calculateExpectedEpisodes } from '../utils/episodeUtils';
 import { parseAndFormatToDDMMYYYY } from '../utils/dateUtils'; 
+import { triggerHapticFeedback } from '../utils/hapticUtils';
 
 interface AnimeItemProps {
   anime: Anime;
@@ -30,11 +31,16 @@ const getAudioTypeStyle = (audioType?: AudioType): string => {
 
 const AnimeItem: React.FC<AnimeItemProps> = ({ anime, onUpdateEpisode, onDelete, onEdit, onSetStatus, onSetRating, listDensity }) => {
   const [detailsExpanded, setDetailsExpanded] = useState(false);
+  const [showXpGain, setShowXpGain] = useState(false);
 
   // Animation constants for hover effects handled via CSS classes
   
   const handleIncrement = (e: React.MouseEvent) => {
     e.stopPropagation();
+    triggerHapticFeedback(45);
+    setShowXpGain(true);
+    setTimeout(() => setShowXpGain(false), 1200);
+
     const newCount = anime.currentEpisode + 1;
     if (anime.totalEpisodes === undefined || newCount <= anime.totalEpisodes) {
       onUpdateEpisode(anime.id, newCount);
@@ -156,13 +162,20 @@ const AnimeItem: React.FC<AnimeItemProps> = ({ anime, onUpdateEpisode, onDelete,
                     {anime.currentEpisode}
                     <span className="text-gray-500"> / {anime.totalEpisodes || '?'}</span>
                   </span>
-                  <button 
-                    onClick={handleIncrement} 
-                    className="p-1.5 rounded-md hover:bg-accent-600 hover:text-white text-accent-400 transition-all disabled:opacity-30 disabled:hover:bg-transparent" 
-                    disabled={anime.totalEpisodes !== undefined && anime.currentEpisode >= anime.totalEpisodes}
-                  >
-                    <PlusIcon className="w-4 h-4" strokeWidth={2.5} />
-                  </button>
+                  <div className="relative">
+                    <button 
+                      onClick={handleIncrement} 
+                      className="p-1.5 rounded-md hover:bg-accent-600 hover:text-white text-accent-400 transition-all disabled:opacity-30 disabled:hover:bg-transparent" 
+                      disabled={anime.totalEpisodes !== undefined && anime.currentEpisode >= anime.totalEpisodes}
+                    >
+                      <PlusIcon className="w-4 h-4" strokeWidth={2.5} />
+                    </button>
+                    {showXpGain && (
+                      <span className="absolute -top-7 left-1/2 -translate-x-1/2 whitespace-nowrap bg-amber-400 text-slate-950 font-black text-[10px] px-2 py-0.5 rounded-full shadow-lg shadow-amber-400/50 animate-bounce z-30 pointer-events-none">
+                        +1 EP (+20 XP) ✨
+                      </span>
+                    )}
+                  </div>
               </div>
             </div>
 

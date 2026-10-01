@@ -2,17 +2,18 @@ import React from 'react';
 import { User, Rank, PublicUser } from '../types';
 import AvatarDisplay from './AvatarDisplay';
 import ProgressBar from './ProgressBar';
-import { EyeIcon } from './Icons';
+import { EyeIcon, SparklesIcon } from './Icons';
 
 interface UserProfileCardProps {
   user: User | PublicUser;
   rank: Rank;
   xpForNextLevel: number;
   onViewProfile?: (username: string) => void;
+  onShareProfile?: () => void;
   isCurrentUser?: boolean;
 }
 
-const UserProfileCard: React.FC<UserProfileCardProps> = ({ user, rank, xpForNextLevel, onViewProfile, isCurrentUser = false }) => {
+const UserProfileCard: React.FC<UserProfileCardProps> = ({ user, rank, xpForNextLevel, onViewProfile, onShareProfile, isCurrentUser = false }) => {
 
   return (
     <div className="relative group rounded-2xl p-[1px] bg-gradient-to-r from-accent-500 via-accent-300 to-accent-500 bg-[length:200%_auto] animate-gradient-xy shadow-lg">
@@ -44,15 +45,28 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({ user, rank, xpForNext
               </div>
             </div>
 
-            {isCurrentUser && onViewProfile && (
-              <button
-                onClick={() => onViewProfile(user.username)}
-                className="mt-4 sm:mt-0 px-4 py-2 bg-white/5 hover:bg-white/10 text-white text-sm font-semibold rounded-lg flex items-center justify-center gap-2 transition-all border border-white/10 hover:border-white/20 group/btn"
-              >
-                <EyeIcon className="w-4 h-4 text-gray-400 group-hover/btn:text-white transition-colors" />
-                <span>Ver Perfil</span>
-              </button>
-            )}
+            <div className="flex items-center gap-2 mt-4 sm:mt-0 flex-wrap justify-center sm:justify-end">
+              {onShareProfile && (
+                <button
+                  onClick={onShareProfile}
+                  className="px-3.5 py-2 bg-gradient-to-r from-accent-600 to-indigo-600 hover:from-accent-500 hover:to-indigo-500 text-white text-xs sm:text-sm font-bold rounded-lg flex items-center gap-1.5 shadow-md shadow-accent-600/20 transition-all border border-white/10 active:scale-95 cursor-pointer"
+                  title="Gerar e compartilhar card do perfil"
+                >
+                  <SparklesIcon className="w-4 h-4 text-amber-300" />
+                  <span>Card Social</span>
+                </button>
+              )}
+
+              {isCurrentUser && onViewProfile && (
+                <button
+                  onClick={() => onViewProfile(user.username)}
+                  className="px-3.5 py-2 bg-white/5 hover:bg-white/10 text-white text-xs sm:text-sm font-semibold rounded-lg flex items-center justify-center gap-2 transition-all border border-white/10 hover:border-white/20 group/btn cursor-pointer"
+                >
+                  <EyeIcon className="w-4 h-4 text-gray-400 group-hover/btn:text-white transition-colors" />
+                  <span>Ver Perfil</span>
+                </button>
+              )}
+            </div>
           </div>
 
           {user.bio && (

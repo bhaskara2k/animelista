@@ -263,6 +263,35 @@ export const getFeedEvents = async (userId: string, friendIds: string[]): Promis
     }).filter(e => e.user_profile.username !== 'Usuário Desconhecido') as unknown as FeedEvent[];
 };
 
+export const getUserTimelineEvents = async (userId: string): Promise<FeedEvent[]> => {
+    try {
+        const { data: rawEvents, error } = await supabase
+            .from('feed_events')
+            .select('*')
+            .eq('user_id', userId)
+            .order('created_at', { ascending: false })
+            .limit(30);
+
+        if (error) {
+            console.error("Error fetching user timeline events:", error);
+            return [];
+        }
+
+        if (!rawEvents || rawEvents.length === 0) return [];
+
+        const profiles = await getProfilesByIds([userId]);
+        const userProfile = profiles.get(userId);
+
+        return rawEvents.map(event => ({
+            ...event,
+            user_profile: userProfile || { id: userId, username: 'Usuário', level: 1, xp: 0 }
+        })) as unknown as FeedEvent[];
+    } catch (err) {
+        console.error("Failed to load user timeline:", err);
+        return [];
+    }
+};
+
 export const createFeedEvent = async (userId: string, eventType: FeedEventType, metadata: object): Promise<void> => {
     const { error } = await supabase
         .from('feed_events')

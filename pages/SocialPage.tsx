@@ -2,23 +2,27 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import * as SocialService from '../services/SocialService';
 import * as GamificationService from '../services/GamificationService';
-import { PublicUser, Friendship, FeedEvent, FriendshipStatus, Rank } from '../types';
+import { PublicUser, Friendship, FeedEvent, FriendshipStatus, Rank, Anime, StatisticsData } from '../types';
 import FriendCard from '../components/FriendCard';
 import FeedEventCard from '../components/FeedEventCard';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { SearchIcon, UsersIcon, BellIcon, SparklesIcon, ChatBubbleBottomCenterTextIcon } from '../components/Icons'; // Assuming generic icons or similar exist
 import UserProfileCard from '../components/UserProfileCard';
 import AvatarDisplay from '../components/AvatarDisplay';
+import ShareProfileModal from '../components/ShareProfileModal';
 
 type SocialSubView = 'feed' | 'friends' | 'requests' | 'find';
 
 interface SocialPageProps {
   onViewProfile: (username: string) => void;
+  animes?: Anime[];
+  stats?: StatisticsData | null;
 }
 
-const SocialPage: React.FC<SocialPageProps> = ({ onViewProfile }) => {
+const SocialPage: React.FC<SocialPageProps> = ({ onViewProfile, animes = [], stats }) => {
   const { currentUser } = useAuth();
   const [activeSubView, setActiveSubView] = useState<SocialSubView>('feed');
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState<PublicUser[]>([]);
   const [isSearching, setIsSearching] = useState(false);
@@ -335,6 +339,7 @@ const SocialPage: React.FC<SocialPageProps> = ({ onViewProfile }) => {
         rank={userRank}
         xpForNextLevel={xpForNextLevel}
         onViewProfile={onViewProfile}
+        onShareProfile={() => setIsShareModalOpen(true)}
         isCurrentUser={true}
       />
 
@@ -374,6 +379,16 @@ const SocialPage: React.FC<SocialPageProps> = ({ onViewProfile }) => {
         {renderContent()}
       </div>
 
+      {/* Share Profile Modal */}
+      {currentUser && (
+        <ShareProfileModal
+          isOpen={isShareModalOpen}
+          onClose={() => setIsShareModalOpen(false)}
+          user={currentUser}
+          stats={stats}
+          animes={animes}
+        />
+      )}
     </div>
   );
 };

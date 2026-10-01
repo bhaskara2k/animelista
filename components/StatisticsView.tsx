@@ -84,6 +84,24 @@ const StatisticsView: React.FC<StatisticsViewProps> = ({ stats, username }) => {
     }
   };
 
+  // Calculate total time watched based on 24 min per episode
+  const timeWatched = useMemo(() => {
+    const totalMinutes = stats.totalEpisodesWatched * 24;
+    const days = Math.floor(totalMinutes / (24 * 60));
+    const hours = Math.floor((totalMinutes % (24 * 60)) / 60);
+    const minutes = totalMinutes % 60;
+    return {
+      days,
+      hours,
+      minutes,
+      totalMinutes,
+      formatted: `${days}d ${hours}h`,
+      detailed: `${days} dias, ${hours}h e ${minutes}m`,
+    };
+  }, [stats.totalEpisodesWatched]);
+
+  const dominantGenre = topGenres.length > 0 ? topGenres[0].genre : null;
+
   return (
     <div className="space-y-8 animate-fade-in pb-10">
 
@@ -109,20 +127,21 @@ const StatisticsView: React.FC<StatisticsViewProps> = ({ stats, username }) => {
           title="Episódios Vistos"
           value={stats.totalEpisodesWatched.toLocaleString()}
           icon={<MaterialSymbol iconName="slideshow" className="w-8 h-8" />}
-          trend="Tempo total investido"
+          trend="Episódios concluídos"
+        />
+        <StatCard
+          title="Tempo Assistido"
+          value={timeWatched.formatted}
+          icon={<MaterialSymbol iconName="schedule" className="w-8 h-8 text-amber-400" />}
+          className="border-amber-500/20"
+          trend={`~${timeWatched.detailed}`}
         />
         <StatCard
           title="Nota Média"
-          value={stats.averageRating !== undefined ? stats.averageRating.toFixed(1) : "N/A"}
+          value={stats.averageRating !== undefined && stats.averageRating > 0 ? stats.averageRating.toFixed(1) : "N/A"}
           icon={<StarIcon className="w-8 h-8" filled />}
           className="border-accent-500/30"
           trend="Baseado em completados"
-        />
-        <StatCard
-          title="Conquistas"
-          value="N/A" // Placeholder for now, could be passed in stats
-          icon={<TrophyIcon className="w-8 h-8" />}
-          trend="Em breve"
         />
       </div>
 
