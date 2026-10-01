@@ -209,3 +209,19 @@ export const ShareIcon: React.FC<{ className?: string, opticalSize?: number }> =
   <MaterialSymbol iconName="share" className={className} opticalSize={opticalSize} />
 );
 
+export const FireIcon: React.FC<{ className?: string, opticalSize?: number }> = ({ className = "w-5 h-5", opticalSize }) => (
+  <MaterialSymbol iconName="local_fire_department" className={className} opticalSize={opticalSize} />
+);
+
+export const BoltIcon: React.FC<{ className?: string, opticalSize?: number }> = ({ className = "w-5 h-5", opticalSize }) => (
+  <MaterialSymbol iconName="bolt" className={className} opticalSize={opticalSize} />
+);
+
+export const CrownIcon: React.FC<{ className?: string, opticalSize?: number }> = ({ className = "w-5 h-5", opticalSize }) => (
+  <MaterialSymbol iconName="crown" className={className} opticalSize={opticalSize} />
+);
+
+export const ShieldIcon: React.FC<{ className?: string, opticalSize?: number }> = ({ className = "w-5 h-5", opticalSize }) => (
+  <MaterialSymbol iconName="shield" className={className} opticalSize={opticalSize} />
+);
+

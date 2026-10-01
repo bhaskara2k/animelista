@@ -230,18 +230,18 @@ export interface User {
 
 
 // --- Achievement Types ---
-export type AchievementId =
-  | 'FIRST_ANIME_STARTED'
-  | 'COMPLETED_1_ANIME' | 'COMPLETED_5_ANIMES' | 'COMPLETED_10_ANIMES' | 'COMPLETED_25_ANIMES' | 'COMPLETED_50_ANIMES' | 'COMPLETED_100_ANIMES'
-  | 'WATCHED_50_EPISODES' | 'WATCHED_100_EPISODES' | 'WATCHED_250_EPISODES' | 'WATCHED_500_EPISODES' | 'WATCHED_1000_EPISODES'
-  | 'RATED_1_ANIME' | 'RATED_5_ANIMES' | 'RATED_10_ANIMES' | 'RATED_25_ANIMES'
-  | 'EXPLORED_3_GENRES' | 'EXPLORED_5_GENRES' | 'EXPLORED_10_GENRES' | 'EXPLORED_15_GENRES';
+export type AchievementId = string;
+
+export type AchievementRank = 'E' | 'D' | 'C' | 'B' | 'A' | 'S' | 'MONARCH';
 
 export interface AchievementTier {
   id: AchievementId;
   title: string;
   description: string;
   target: number;
+  xpReward?: number;
+  rank?: AchievementRank;
+  animeReference?: string;
   icon?: React.FC<{ className?: string; opticalSize?: number; filled?: boolean }>;
 }
 

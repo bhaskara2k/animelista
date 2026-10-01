@@ -183,7 +183,8 @@ const MainApp: React.FC = () => {
         achievement_title: achievement.title,
         achievement_description: achievement.description,
       });
-      await handleBulkXpGain(GamificationService.XP_EVENTS.UNLOCK_ACHIEVEMENT);
+      const xpToAward = achievement.xpReward || GamificationService.XP_EVENTS.UNLOCK_ACHIEVEMENT;
+      await handleBulkXpGain(xpToAward);
     } catch (error) {
       console.error("Failed to create achievement feed event:", error);
       alert("Não foi possível registrar a nova conquista no feed de atividades.");
