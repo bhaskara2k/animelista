@@ -1,19 +1,21 @@
 import React, { useState, useMemo } from 'react';
 import { UserAchievement, AchievementDefinition, AchievementTier, AchievementRank } from '../types';
-import { 
-  LockClosedIcon, 
-  CheckCircleIcon, 
-  TrophyIcon, 
-  SparklesIcon, 
-  CrownIcon, 
-  BoltIcon, 
+import {
+  LockClosedIcon,
+  CheckCircleIcon,
+  TrophyIcon,
+  SparklesIcon,
+  CrownIcon,
+  BoltIcon,
   FireIcon,
   ShieldIcon,
   StarIcon,
   AcademicCapIcon,
   TrendingUpIcon,
   BookOpenIcon,
-  FilmIcon
+  FilmIcon,
+  MiniLockIcon,
+  SparkIcon
 } from './Icons';
 
 interface AchievementsViewProps {
@@ -170,7 +172,7 @@ const AchievementsView: React.FC<AchievementsViewProps> = ({ userAchievements, a
       {/* ======================================================== */}
       <div className="relative overflow-hidden rounded-3xl border border-cyan-500/30 bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950/80 p-6 md:p-8 shadow-[0_0_40px_rgba(6,182,212,0.15)]">
         {/* Futuristic glowing grid / scanline effect */}
-        <div 
+        <div
           className="absolute inset-0 opacity-10 pointer-events-none"
           style={{
             backgroundImage: `radial-gradient(rgba(6, 182, 212, 0.4) 1px, transparent 1px)`,
@@ -185,7 +187,7 @@ const AchievementsView: React.FC<AchievementsViewProps> = ({ userAchievements, a
           <div className="flex flex-wrap items-center justify-between gap-3 mb-6 pb-4 border-b border-white/10">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-mono text-xs tracking-wider">
               <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
-              SISTEMA DE DESPERTAR OTATKU // PAINEL DO JOGADOR
+              SISTEMA DE DESPERTAR OTAKU // PAINEL DO JOGADOR
             </div>
 
             <div className="flex items-center gap-2">
@@ -209,8 +211,9 @@ const AchievementsView: React.FC<AchievementsViewProps> = ({ userAchievements, a
 
             {/* Quick Summary XP Capsule */}
             <div className="flex-shrink-0 bg-slate-900/90 border border-amber-500/40 rounded-2xl p-4 shadow-[0_0_20px_rgba(245,158,11,0.15)] text-center min-w-[180px]">
-              <div className="text-xs uppercase tracking-widest text-amber-400 font-mono font-bold mb-1 flex items-center justify-center gap-1">
-                <SparklesIcon className="w-3.5 h-3.5" /> XP de Conquistas
+              <div className="text-xs uppercase tracking-widest text-amber-400 font-mono font-bold mb-1 flex items-center justify-center gap-1.5">
+                <SparkIcon className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
+                <span>XP de Conquistas</span>
               </div>
               <div className="text-2xl md:text-3xl font-black text-amber-300 font-mono">
                 +{stats.totalXpEarned.toLocaleString('pt-BR')}
@@ -302,7 +305,7 @@ const AchievementsView: React.FC<AchievementsViewProps> = ({ userAchievements, a
             {[
               { id: 'all', label: `Todas (${stats.total})`, icon: SparklesIcon },
               { id: 'unlocked', label: `Desbloqueadas (${stats.unlockedCount})`, icon: CheckCircleIcon },
-              { id: 'locked', label: `Bloqueadas (${stats.total - stats.unlockedCount})`, icon: LockClosedIcon },
+              { id: 'locked', label: `Bloqueadas (${stats.total - stats.unlockedCount})`, icon: MiniLockIcon },
               { id: 'high_rank', label: `Monarca & Rank S 👑 (${stats.totalHighRanks})`, icon: CrownIcon },
             ].map(btn => {
               const isActive = statusFilter === btn.id;
@@ -330,7 +333,7 @@ const AchievementsView: React.FC<AchievementsViewProps> = ({ userAchievements, a
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Buscar conquista ou anime..."
+              placeholder="Buscar conquista..."
               className="w-full bg-slate-900/80 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition-colors"
             />
             {searchQuery && (
@@ -342,48 +345,6 @@ const AchievementsView: React.FC<AchievementsViewProps> = ({ userAchievements, a
               </button>
             )}
           </div>
-        </div>
-
-        {/* Quick Anime Filter Chips */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-thin scrollbar-thumb-white/10 text-xs">
-          <span className="text-slate-500 font-mono text-[11px] uppercase mr-1 flex-shrink-0">Filtrar por Anime:</span>
-          {[
-            'Solo Leveling',
-            'One Piece',
-            'Naruto',
-            'Dragon Ball',
-            'Bleach',
-            'Hunter x Hunter',
-            'Death Note',
-            'Jujutsu Kaisen',
-            'Chainsaw Man',
-            'Demon Slayer',
-            'Attack on Titan',
-            'Steins;Gate',
-            'Gintama',
-            'One Punch Man',
-            'Kaguya-sama',
-            'Blue Lock',
-            'Spy x Family',
-            'Violet Evergarden',
-            'Cyberpunk',
-            'JoJo',
-          ].map(anime => {
-            const isSelected = searchQuery.toLowerCase() === anime.toLowerCase();
-            return (
-              <button
-                key={anime}
-                onClick={() => setSearchQuery(isSelected ? '' : anime)}
-                className={`flex-shrink-0 px-2.5 py-1 rounded-full text-[11px] font-semibold transition-all
-                  ${isSelected
-                    ? 'bg-amber-500 text-black shadow-md shadow-amber-500/30 font-bold'
-                    : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 border border-white/5'
-                  }`}
-              >
-                {anime}
-              </button>
-            );
-          })}
         </div>
 
         {/* Mobile Category Dropdown Selector */}
@@ -480,8 +441,8 @@ const AchievementsView: React.FC<AchievementsViewProps> = ({ userAchievements, a
             const CategoryIcon = category.categoryIcon;
 
             return (
-              <div 
-                key={category.categoryId} 
+              <div
+                key={category.categoryId}
                 className="bg-slate-900/60 backdrop-blur-md p-5 md:p-7 rounded-3xl border border-white/10 shadow-xl transition-all"
               >
                 {/* Category Header */}
@@ -541,7 +502,7 @@ const AchievementsView: React.FC<AchievementsViewProps> = ({ userAchievements, a
                               : 'bg-slate-900/40 border-white/5 hover:border-white/15 opacity-80 hover:opacity-100'
                           }`}
                       >
-                        {/* Top Badges Bar: Lore Reference + Rank Badge + XP Reward */}
+                        {/* Top Badges Bar: Rank Badge + XP Reward */}
                         <div className="flex items-center justify-between gap-2 mb-3">
                           <div className="flex items-center gap-1.5 flex-wrap">
                             {/* Rank Badge */}
@@ -549,19 +510,12 @@ const AchievementsView: React.FC<AchievementsViewProps> = ({ userAchievements, a
                               <span>{rankStyle.icon}</span>
                               <span>{rankStyle.label}</span>
                             </span>
-
-                            {/* Anime Lore Tag */}
-                            {tierDef.animeReference && (
-                              <span className="px-2 py-0.5 rounded-md text-[10px] font-mono font-semibold bg-white/10 text-slate-300 border border-white/10">
-                                {tierDef.animeReference}
-                              </span>
-                            )}
                           </div>
 
                           {/* XP Reward Capsule */}
-                          <div className="flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-mono font-bold">
-                            <SparklesIcon className="w-3 h-3 text-amber-400" />
-                            +{tierDef.xpReward || 50} XP
+                          <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-mono font-bold">
+                            <SparkIcon className="w-3 h-3 text-amber-400 flex-shrink-0" />
+                            <span>+{tierDef.xpReward || 50} XP</span>
                           </div>
                         </div>
 
@@ -609,9 +563,9 @@ const AchievementsView: React.FC<AchievementsViewProps> = ({ userAchievements, a
                           ) : (
                             <div className="space-y-1.5">
                               <div className="flex justify-between items-center text-xs font-mono">
-                                <span className="text-slate-400 flex items-center gap-1">
-                                  <LockClosedIcon className="w-3 h-3 text-slate-500" />
-                                  Progresso
+                                <span className="text-slate-400 flex items-center gap-1.5">
+                                  <MiniLockIcon className="w-3.5 h-3.5 text-slate-500 flex-shrink-0" />
+                                  <span>Progresso</span>
                                 </span>
                                 <span className="text-slate-200 font-bold">
                                   {progress.toLocaleString('pt-BR')} / {target.toLocaleString('pt-BR')} ({percentComplete}%)
@@ -619,11 +573,10 @@ const AchievementsView: React.FC<AchievementsViewProps> = ({ userAchievements, a
                               </div>
                               <div className="h-2 bg-black/50 rounded-full overflow-hidden border border-white/10">
                                 <div
-                                  className={`h-full transition-all duration-500 ${
-                                    isHighRank
+                                  className={`h-full transition-all duration-500 ${isHighRank
                                       ? 'bg-gradient-to-r from-purple-500 to-amber-400'
                                       : 'bg-gradient-to-r from-cyan-500 to-blue-500'
-                                  }`}
+                                    }`}
                                   style={{ width: `${percentComplete}%` }}
                                 />
                               </div>

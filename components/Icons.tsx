@@ -253,4 +253,17 @@ export const BookmarkIcon: React.FC<{ className?: string, opticalSize?: number, 
   <MaterialSymbol iconName="bookmark" className={className} filled={filled} opticalSize={opticalSize} />
 );
 
+export const MiniLockIcon: React.FC<{ className?: string }> = ({ className = "w-3 h-3" }) => (
+  <svg className={className} viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+    <path fillRule="evenodd" d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zm3 8V5.5a3 3 0 10-6 0V9h6z" clipRule="evenodd" />
+  </svg>
+);
+
+export const SparkIcon: React.FC<{ className?: string }> = ({ className = "w-3 h-3" }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M12 0L14.59 9.41L24 12L14.59 14.59L12 24L9.41 14.59L0 12L9.41 9.41L12 0Z" />
+  </svg>
+);
+
+
 
