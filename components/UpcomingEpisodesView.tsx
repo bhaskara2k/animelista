@@ -27,6 +27,36 @@ export interface UpcomingAnime {
   hasExactTime?: boolean;
 }
 
+// Solid color palette mapping for streaming platforms requested by user
+const getPlatformSolidBadgeStyle = (platformName: string, defaultBg?: string, defaultText?: string): React.CSSProperties => {
+  const name = platformName.toLowerCase().trim();
+  if (name.includes('youtube')) {
+    return { backgroundColor: '#FF0000', color: '#FFFFFF' };
+  }
+  if (name.includes('crunchyroll')) {
+    return { backgroundColor: '#F47521', color: '#000000' };
+  }
+  if (name.includes('disney')) {
+    return { backgroundColor: '#0063E5', color: '#FFFFFF' };
+  }
+  if (name.includes('netflix')) {
+    return { backgroundColor: '#E50914', color: '#FFFFFF' };
+  }
+  if (name.includes('prime') || name.includes('amazon')) {
+    return { backgroundColor: '#00A8E1', color: '#000000' };
+  }
+  if (name.includes('youcine')) {
+    return { backgroundColor: '#111827', color: '#FFFFFF', border: '1px solid rgba(255,255,255,0.2)' };
+  }
+  if (name.includes('max') || name.includes('hbo')) {
+    return { backgroundColor: '#5822B4', color: '#FFFFFF' };
+  }
+  return {
+    backgroundColor: defaultBg || '#334155',
+    color: defaultText || '#FFFFFF',
+  };
+};
+
 interface UpcomingAnimeCardProps {
   item: UpcomingAnime;
   onUpdateEpisode: (id: string, newEpisodeCount: number) => void;
@@ -154,75 +184,80 @@ const UpcomingAnimeCard: React.FC<UpcomingAnimeCardProps> = ({
                 {anime.title}
               </h3>
 
-              {/* Episode & Date Badges */}
-              <div className="flex flex-wrap items-center gap-1.5 mb-2">
-                <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-white/10 text-gray-200 border border-white/5 shadow-sm">
+              {/* Episode & Date Badges with refined, compact icons */}
+              <div className="flex flex-wrap items-center gap-1.5 mb-2.5">
+                <span className="text-[10px] font-extrabold px-1.5 py-0.5 rounded bg-white/10 text-gray-200 border border-white/10 shadow-sm uppercase tracking-wider">
                   EP {nextEpisodeNumber}
                 </span>
 
                 <span
-                  className={`text-xs font-bold flex items-center gap-1 px-2 py-0.5 rounded-md border ${
+                  className={`text-[11px] font-bold flex items-center gap-1 px-2 py-0.5 rounded-md border ${
                     isToday
-                      ? 'text-red-400 bg-red-500/10 border-red-500/30'
+                      ? 'text-red-400 bg-red-500/10 border-red-500/30 shadow-sm shadow-red-500/10'
                       : 'text-accent-300 bg-accent-500/10 border-accent-500/20'
                   }`}
                 >
-                  <CalendarDaysIcon className="w-3.5 h-3.5 shrink-0" opticalSize={18} />
+                  <CalendarDaysIcon className="w-3 h-3 !text-[11px] leading-none shrink-0" opticalSize={16} />
                   <span>{formattedDate}</span>
                 </span>
 
-                {/* Exact Airing Time Badge */}
+                {/* Exact Airing Time Badge with refined, smaller clock icon */}
                 {countdown.timeFormatted && (
                   <span
-                    className="text-xs font-bold flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-300 border border-amber-500/20 shadow-sm"
+                    className="text-[11px] font-bold flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-500/15 text-amber-300 border border-amber-500/25 shadow-sm shadow-amber-500/10"
                     title={`Horário de exibição no seu fuso horário local: ${countdown.timeFormatted}`}
                   >
-                    <ClockIcon className="w-3.5 h-3.5 shrink-0 text-amber-400" opticalSize={18} />
-                    <span>{countdown.timeFormatted}</span>
+                    <ClockIcon className="w-3 h-3 !text-[11px] leading-none shrink-0 text-amber-400" opticalSize={16} />
+                    <span className="font-semibold">{countdown.timeFormatted}</span>
                   </span>
                 )}
               </div>
             </div>
 
-            {/* Countdown Badge */}
-            <div className="mt-1">
+            {/* Countdown Badge: Redesigned with micro-badge and high-contrast monospace time */}
+            <div className="mt-0.5">
               {countdown.isPast ? (
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-bold shadow-sm">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-[11px] font-bold shadow-sm shadow-emerald-500/10">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                   <span>Já disponível!</span>
                 </div>
               ) : countdown.isToday ? (
-                <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold shadow-sm ${
+                <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] border shadow-sm ${
                   countdown.isImminent
-                    ? 'bg-red-500/25 text-red-300 border border-red-500/40 animate-pulse'
-                    : 'bg-orange-500/20 text-orange-300 border border-orange-500/30'
+                    ? 'bg-red-500/20 text-red-300 border-red-500/40 shadow-red-500/20 animate-pulse'
+                    : 'bg-orange-500/15 text-orange-200 border-orange-500/30 shadow-orange-500/10'
                 }`}>
-                  <ClockIcon className="w-3.5 h-3.5 text-orange-400 animate-spin" style={{ animationDuration: '6s' }} opticalSize={18} />
-                  <span>Faltam {countdown.formattedCountdown}</span>
+                  <span className={`w-1.5 h-1.5 rounded-full ${countdown.isImminent ? 'bg-red-400' : 'bg-orange-400'} animate-ping shrink-0`} />
+                  <span className="text-gray-400 text-[10px] uppercase font-bold tracking-wider">Faltam</span>
+                  <span className="font-mono font-bold text-white tracking-wider">{countdown.formattedCountdown}</span>
                 </div>
               ) : (
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-surface-secondary/80 text-text-secondary border border-white/5 text-xs font-medium">
-                  <ClockIcon className="w-3.5 h-3.5 text-accent-400" opticalSize={18} />
-                  <span>Faltam {countdown.formattedCountdown}</span>
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-800/80 border border-white/10 text-[11px] shadow-sm">
+                  <ClockIcon className="w-3 h-3 !text-[11px] leading-none text-accent-400 shrink-0" opticalSize={16} />
+                  <span className="text-gray-400 text-[10px] uppercase font-bold tracking-wider">Faltam</span>
+                  <span className="font-mono font-bold text-gray-100 tracking-wide">{countdown.formattedCountdown}</span>
                 </div>
               )}
             </div>
           </div>
         </div>
 
-        {/* Streaming platforms tags if available */}
+        {/* Streaming platforms tags with SOLID colors (requested by user) */}
         {anime.streamingPlatforms && anime.streamingPlatforms.length > 0 && (
-          <div className="flex flex-wrap items-center gap-1 text-[11px] text-gray-400">
-            <span className="text-gray-500 font-medium">Onde ver:</span>
-            {anime.streamingPlatforms.slice(0, 3).map(p => (
-              <span
-                key={p.name}
-                className="px-1.5 py-0.5 rounded text-[10px] font-bold"
-                style={{ backgroundColor: `${p.bgColor}33`, color: p.bgColor }}
-              >
-                {p.name}
-              </span>
-            ))}
+          <div className="flex flex-wrap items-center gap-1.5 text-[11px] pt-0.5">
+            <span className="text-gray-400 font-semibold text-[10px] uppercase tracking-wider">Onde ver:</span>
+            {anime.streamingPlatforms.slice(0, 3).map((p) => {
+              const solidStyle = getPlatformSolidBadgeStyle(p.name, p.bgColor, p.textColor);
+              return (
+                <span
+                  key={p.name}
+                  className="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider shadow-sm transition-transform hover:scale-105"
+                  style={solidStyle}
+                >
+                  {p.name}
+                </span>
+              );
+            })}
           </div>
         )}
 
