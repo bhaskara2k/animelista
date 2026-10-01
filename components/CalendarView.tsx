@@ -87,19 +87,6 @@ const getPlatformBadgeStyle = (platformName: string, defaultBg?: string, default
   return { backgroundColor: defaultBg || '#334155', color: defaultText || '#FFFFFF' };
 };
 
-const getPlatformInitial = (platformName: string): string => {
-  const name = platformName.toLowerCase().trim();
-  if (name.includes('crunchyroll')) return 'C';
-  if (name.includes('disney')) return 'D+';
-  if (name.includes('netflix')) return 'N';
-  if (name.includes('prime') || name.includes('amazon')) return 'P';
-  if (name.includes('youtube')) return 'Y';
-  if (name.includes('youcine')) return 'U';
-  if (name.includes('anime onegai') || name.includes('onegai')) return 'O';
-  if (name.includes('hidive')) return 'H';
-  return platformName.charAt(0).toUpperCase();
-};
-
 const CalendarView: React.FC<CalendarViewProps> = ({
   animeList,
   currentDate,
@@ -385,20 +372,17 @@ const CalendarView: React.FC<CalendarViewProps> = ({
 
                           {/* Platform Solid Chip */}
                           {anime.streamingPlatforms && anime.streamingPlatforms.length > 0 && (
-                            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1 mt-auto pt-1 border-t border-white/5 w-full">
-                              {anime.streamingPlatforms.slice(0, 3).map((p) => {
+                            <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center sm:justify-start gap-1 mt-auto pt-1 border-t border-white/5 w-full">
+                              {anime.streamingPlatforms.slice(0, 2).map((p) => {
                                 const style = getPlatformBadgeStyle(p.name, p.bgColor, p.textColor);
                                 return (
                                   <span
                                     key={p.name}
                                     style={style}
                                     title={p.name}
-                                    className="px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wider flex items-center justify-center min-w-[18px] text-center shadow-xs"
+                                    className="w-full sm:w-auto text-center px-1 py-0.5 rounded text-[8px] sm:text-[9px] font-black uppercase tracking-tight truncate shadow-xs block"
                                   >
-                                    {/* Mobile: initial letter only */}
-                                    <span className="sm:hidden font-black">{getPlatformInitial(p.name)}</span>
-                                    {/* Desktop: full name */}
-                                    <span className="hidden sm:inline">{p.name}</span>
+                                    {p.name}
                                   </span>
                                 );
                               })}
