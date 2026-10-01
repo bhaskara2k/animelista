@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import { Anime, ListDensityOption } from '../types';
-import { PlusIcon, EyeIcon, CalendarDaysIcon, PlayIcon, BellAlertIcon } from './Icons';
-import { parseFromYYYYMMDD } from '../utils/dateUtils';
+import { CalendarDaysIcon, PlayIcon, BellAlertIcon } from './Icons';
 
 interface UpcomingAnime {
   anime: Anime;
@@ -38,11 +37,11 @@ const UpcomingAnimeCard: React.FC<UpcomingAnimeCardProps> = ({ item, onUpdateEpi
 
     // Check if it's within this week to show day name
     const diffTime = airDate.getTime() - today.getTime();
-    const diffDays = diffTime / (1000 * 60 * 60 * 24);
+    const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
 
     if (diffDays < 7 && diffDays > 1) {
-      const days = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-      return days[airDate.getDay()].toUpperCase();
+      const days = ['DOMINGO', 'SEGUNDA', 'TERÇA', 'QUARTA', 'QUINTA', 'SEXTA', 'SÁBADO'];
+      return days[airDate.getDay()];
     }
 
     const day = String(airDate.getDate()).padStart(2, '0');
@@ -92,8 +91,9 @@ const UpcomingAnimeCard: React.FC<UpcomingAnimeCardProps> = ({ item, onUpdateEpi
               <span className="text-xs font-semibold px-2 py-0.5 rounded-md bg-white/10 text-gray-300 border border-white/5">
                 EP {nextEpisodeNumber}
               </span>
-              <span className={`text-xs font-bold flex items-center gap-1 ${isToday ? 'text-green-400' : 'text-accent-300'}`}>
-                <CalendarDaysIcon className="w-3 h-3" /> {formattedDate}
+              <span className={`text-xs font-bold flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-white/10 border border-white/5 ${isToday ? 'text-green-400 bg-green-500/10 border-green-500/20' : 'text-accent-300'}`}>
+                <CalendarDaysIcon className="w-3 h-3 !text-[12px] leading-none shrink-0" opticalSize={20} />
+                <span>{formattedDate}</span>
               </span>
             </div>
           </div>
@@ -140,7 +140,7 @@ const UpcomingEpisodesView: React.FC<UpcomingEpisodesViewProps> = ({
     );
   }
 
-  // Group by date
+  // Group by date and sort chronologically (closest to farthest)
   const grouped = useMemo(() => {
     const groups: Record<string, UpcomingAnime[]> = {
       'HOJE': [],
@@ -164,13 +164,25 @@ const UpcomingEpisodesView: React.FC<UpcomingEpisodesViewProps> = ({
         groups['AMANHÃ'].push(item);
       } else {
         const diffTime = date.getTime() - today.getTime();
-        const diffDays = diffTime / (1000 * 60 * 60 * 24);
-        if (diffDays < 7) {
+        const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+        if (diffDays < 7 && diffDays > 0) {
           groups['ESTA SEMANA'].push(item);
         } else {
           groups['EM BREVE'].push(item);
         }
       }
+    });
+
+    // Ordenação estritamente cronológica: do mais próximo (recente) para o mais distante no futuro
+    Object.keys(groups).forEach(key => {
+      groups[key].sort((a, b) => {
+        const timeA = new Date(a.nextAiringDate).getTime();
+        const timeB = new Date(b.nextAiringDate).getTime();
+        if (timeA !== timeB) {
+          return timeA - timeB;
+        }
+        return a.anime.title.localeCompare(b.anime.title);
+      });
     });
 
     return groups;
@@ -201,7 +213,7 @@ const UpcomingEpisodesView: React.FC<UpcomingEpisodesViewProps> = ({
               {groupName}
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {grouped[groupName].sort((a, b) => a.anime.title.localeCompare(b.anime.title)).map(item => (
+              {grouped[groupName].map(item => (
                 <UpcomingAnimeCard
                   key={item.anime.id}
                   item={item}
