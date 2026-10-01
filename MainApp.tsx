@@ -1171,52 +1171,51 @@ const MainApp: React.FC = () => {
           />
         )}
 
-        {viewMode === 'list' && (
-          <>
-            <div className="mb-4 flex space-x-0 border-b border-border-secondary">
-              <button
-                onClick={() => setListSubView('all')}
-                className={`px-4 py-2.5 rounded-t-md text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-ring
-                          ${listSubView === 'all'
-                    ? 'bg-surface-primary text-accent border-t border-x border-border-secondary'
-                    : 'text-text-secondary hover:text-accent hover:bg-surface-hover/30'
-                  }`}
-              >
-                Todos os Animes
-              </button>
-              <button
-                onClick={() => setListSubView('upcoming')}
-                className={`px-4 py-2.5 rounded-t-md text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-ring
-                          ${listSubView === 'upcoming'
-                    ? 'bg-surface-primary text-accent border-t border-x border-border-secondary'
-                    : 'text-text-secondary hover:text-accent hover:bg-surface-hover/30'
-                  }`}
-              >
-                Próximos Episódios
-              </button>
-            </div>
+        {/* Minha Lista tab - kept mounted with hidden to prevent re-mount freeze and preserve scroll */}
+        <div className={viewMode === 'list' ? 'block' : 'hidden'}>
+          <div className="mb-4 flex space-x-0 border-b border-border-secondary">
+            <button
+              onClick={() => setListSubView('all')}
+              className={`px-4 py-2.5 rounded-t-md text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-ring
+                        ${listSubView === 'all'
+                  ? 'bg-surface-primary text-accent border-t border-x border-border-secondary'
+                  : 'text-text-secondary hover:text-accent hover:bg-surface-hover/30'
+                }`}
+            >
+              Todos os Animes
+            </button>
+            <button
+              onClick={() => setListSubView('upcoming')}
+              className={`px-4 py-2.5 rounded-t-md text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-ring
+                        ${listSubView === 'upcoming'
+                  ? 'bg-surface-primary text-accent border-t border-x border-border-secondary'
+                  : 'text-text-secondary hover:text-accent hover:bg-surface-hover/30'
+                }`}
+            >
+              Próximos Episódios
+            </button>
+          </div>
 
-            {listSubView === 'all' && (
-              <AnimeList
-                animeList={filteredAnimeList}
-                onUpdateEpisode={handleUpdateEpisode}
-                onDelete={handleDeleteAnime}
-                onEdit={openEditModal}
-                onSetStatus={handleSetStatus}
-                onSetRating={handleSetRating}
-                listDensity={appSettings.listDensity}
-              />
-            )}
-            {listSubView === 'upcoming' && (
-              <UpcomingEpisodesView
-                upcomingAnimes={upcomingAnimesForView}
-                onUpdateEpisode={handleUpdateEpisode}
-                onEditAnime={openEditModal}
-                listDensity={appSettings.listDensity}
-              />
-            )}
-          </>
-        )}
+          {listSubView === 'all' && (
+            <AnimeList
+              animeList={filteredAnimeList}
+              onUpdateEpisode={handleUpdateEpisode}
+              onDelete={handleDeleteAnime}
+              onEdit={openEditModal}
+              onSetStatus={handleSetStatus}
+              onSetRating={handleSetRating}
+              listDensity={appSettings.listDensity}
+            />
+          )}
+          {listSubView === 'upcoming' && (
+            <UpcomingEpisodesView
+              upcomingAnimes={upcomingAnimesForView}
+              onUpdateEpisode={handleUpdateEpisode}
+              onEditAnime={openEditModal}
+              listDensity={appSettings.listDensity}
+            />
+          )}
+        </div>
         {viewMode === 'discover' && (
           <DiscoverView
             onAddAnime={handleAddAnimeFromDiscover}

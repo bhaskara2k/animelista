@@ -1,7 +1,6 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect, useRef } from 'react';
 import { Anime, AnimeStatus, ListDensityOption } from '../types';
 import AnimeItem from './AnimeItem';
-import { ListBulletIcon, SparklesIcon, TvIcon } from './Icons';
 import { MaterialSymbol } from './Icons';
 
 interface AnimeListProps {
@@ -14,6 +13,9 @@ interface AnimeListProps {
   listDensity: ListDensityOption;
 }
 
+const INITIAL_BATCH = 24;
+const BATCH_INCREMENT = 18;
+
 const AnimeList: React.FC<AnimeListProps> = ({
   animeList,
   onUpdateEpisode,
@@ -23,6 +25,38 @@ const AnimeList: React.FC<AnimeListProps> = ({
   onSetRating,
   listDensity
 }) => {
+  const [visibleCount, setVisibleCount] = useState(INITIAL_BATCH);
+  const observerRef = useRef<HTMLDivElement>(null);
+
+  // Reset visibleCount when the list length changes (search or filter)
+  useEffect(() => {
+    setVisibleCount(INITIAL_BATCH);
+  }, [animeList.length]);
+
+  // Infinite scroll observer to progressively render more items seamlessly
+  useEffect(() => {
+    if (visibleCount >= animeList.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setVisibleCount((prev) => Math.min(prev + BATCH_INCREMENT, animeList.length));
+        }
+      },
+      { rootMargin: '350px' }
+    );
+
+    const currentRef = observerRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, [visibleCount, animeList.length]);
 
   // Calculate quick stats for the header
   const stats = useMemo(() => {
@@ -33,7 +67,7 @@ const AnimeList: React.FC<AnimeListProps> = ({
 
   if (animeList.length === 0) {
     return (
-      <div className="text-center py-20 px-8 glass-panel rounded-2xl flex flex-col items-center justify-center animate-fade-in border border-white/5 mt-6">
+      <div className="text-center py-20 px-8 glass-panel rounded-2xl flex flex-col items-center justify-center border border-white/5 mt-6">
         <div className="w-24 h-24 rounded-full bg-white/5 flex items-center justify-center mb-6 ring-4 ring-white/10 animate-pulse">
           <MaterialSymbol iconName="movie_filter" className="w-12 h-12 text-gray-400" />
         </div>
@@ -55,8 +89,10 @@ const AnimeList: React.FC<AnimeListProps> = ({
     }
   };
 
+  const visibleAnimes = animeList.slice(0, visibleCount);
+
   return (
-    <div className="animate-fade-in space-y-6 pb-10">
+    <div className="space-y-6 pb-10">
 
       {/* Premium Header with Stats */}
       <div className="flex flex-col md:flex-row items-end md:items-center justify-between gap-4 px-2">
@@ -84,12 +120,8 @@ const AnimeList: React.FC<AnimeListProps> = ({
 
       {/* The Grid */}
       <div className={`grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 ${getGridGapClass()}`}>
-        {animeList.map((anime, index) => (
-          <div
-            key={anime.id}
-            className="animate-fade-in-up"
-            style={{ animationDelay: `${Math.min(index * 50, 500)}ms` }} // Staggered animation effect
-          >
+        {visibleAnimes.map((anime) => (
+          <div key={anime.id}>
             <AnimeItem
               anime={anime}
               onUpdateEpisode={onUpdateEpisode}
@@ -102,6 +134,13 @@ const AnimeList: React.FC<AnimeListProps> = ({
           </div>
         ))}
       </div>
+
+      {/* Sentinel element to trigger loading the next batch */}
+      {visibleCount < animeList.length && (
+        <div ref={observerRef} className="py-6 flex justify-center items-center">
+          <div className="w-6 h-6 border-2 border-accent-500 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      )}
     </div>
   );
 };

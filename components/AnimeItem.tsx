@@ -113,6 +113,8 @@ const AnimeItem: React.FC<AnimeItemProps> = ({ anime, onUpdateEpisode, onDelete,
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
             src={anime.imageUrl || `https://picsum.photos/seed/${anime.id}/300/400`} 
             alt={anime.title}
+            loading="lazy"
+            decoding="async"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent pointer-events-none" />
         </div>
