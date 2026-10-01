@@ -344,8 +344,66 @@ const AchievementsView: React.FC<AchievementsViewProps> = ({ userAchievements, a
           </div>
         </div>
 
-        {/* Category Horizontal Filter Pills */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-white/10">
+        {/* Quick Anime Filter Chips */}
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-thin scrollbar-thumb-white/10 text-xs">
+          <span className="text-slate-500 font-mono text-[11px] uppercase mr-1 flex-shrink-0">Filtrar por Anime:</span>
+          {[
+            'Solo Leveling',
+            'One Piece',
+            'Naruto',
+            'Dragon Ball',
+            'Bleach',
+            'Hunter x Hunter',
+            'Death Note',
+            'Jujutsu Kaisen',
+            'Chainsaw Man',
+            'Demon Slayer',
+            'Attack on Titan',
+            'Steins;Gate',
+            'Gintama',
+            'One Punch Man',
+            'Kaguya-sama',
+            'Blue Lock',
+            'Spy x Family',
+            'Violet Evergarden',
+            'Cyberpunk',
+            'JoJo',
+          ].map(anime => {
+            const isSelected = searchQuery.toLowerCase() === anime.toLowerCase();
+            return (
+              <button
+                key={anime}
+                onClick={() => setSearchQuery(isSelected ? '' : anime)}
+                className={`flex-shrink-0 px-2.5 py-1 rounded-full text-[11px] font-semibold transition-all
+                  ${isSelected
+                    ? 'bg-amber-500 text-black shadow-md shadow-amber-500/30 font-bold'
+                    : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 border border-white/5'
+                  }`}
+              >
+                {anime}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Mobile Category Dropdown Selector */}
+        <div className="block sm:hidden">
+          <select
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+            className="w-full bg-slate-900 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-400"
+          >
+            <option value="all">Todas as Trilhas ({achievementDefinitions.length} Categorias - {stats.total} Desafios)</option>
+            {achievementDefinitions.map(cat => (
+              <option key={cat.categoryId} value={cat.categoryId}>
+                {cat.categoryTitle} ({cat.tiers.length} desafios)
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Desktop Category Horizontal Filter Pills */}
+        <div className="hidden sm:flex items-center gap-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-white/10">
           <button
             onClick={() => setSelectedCategory('all')}
             className={`flex-shrink-0 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all
@@ -354,7 +412,7 @@ const AchievementsView: React.FC<AchievementsViewProps> = ({ userAchievements, a
                 : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 border border-transparent'
               }`}
           >
-            Todas as Categorias
+            Todas as Categorias ({achievementDefinitions.length})
           </button>
 
           {achievementDefinitions.map(cat => {

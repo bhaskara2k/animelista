@@ -225,3 +225,32 @@ export const ShieldIcon: React.FC<{ className?: string, opticalSize?: number }> 
   <MaterialSymbol iconName="shield" className={className} opticalSize={opticalSize} />
 );
 
+export const HeartIcon: React.FC<{ className?: string, opticalSize?: number, filled?: boolean }> = ({ className = "w-5 h-5", opticalSize, filled = true }) => (
+  <MaterialSymbol iconName="favorite" className={className} filled={filled} opticalSize={opticalSize} />
+);
+
+export const TvIcon: React.FC<{ className?: string, opticalSize?: number }> = ({ className = "w-5 h-5", opticalSize }) => (
+  <MaterialSymbol iconName="tv" className={className} opticalSize={opticalSize} />
+);
+
+export const PencilSquareIcon: React.FC<{ className?: string, opticalSize?: number }> = ({ className = "w-5 h-5", opticalSize }) => (
+  <MaterialSymbol iconName="edit_note" className={className} opticalSize={opticalSize} />
+);
+
+export const RocketLaunchIcon: React.FC<{ className?: string, opticalSize?: number }> = ({ className = "w-5 h-5", opticalSize }) => (
+  <MaterialSymbol iconName="rocket_launch" className={className} opticalSize={opticalSize} />
+);
+
+export const FaceSmileIcon: React.FC<{ className?: string, opticalSize?: number }> = ({ className = "w-5 h-5", opticalSize }) => (
+  <MaterialSymbol iconName="mood" className={className} opticalSize={opticalSize} />
+);
+
+export const LanguageIcon: React.FC<{ className?: string, opticalSize?: number }> = ({ className = "w-5 h-5", opticalSize }) => (
+  <MaterialSymbol iconName="translate" className={className} opticalSize={opticalSize} />
+);
+
+export const BookmarkIcon: React.FC<{ className?: string, opticalSize?: number, filled?: boolean }> = ({ className = "w-5 h-5", opticalSize, filled = true }) => (
+  <MaterialSymbol iconName="bookmark" className={className} filled={filled} opticalSize={opticalSize} />
+);
+
+
