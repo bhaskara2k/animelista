@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { AniListMedia } from '../types';
 import Modal from './Modal';
 import LoadingSpinner from './LoadingSpinner';
-import { translateText } from '../services/GeminiService'; // Assuming GeminiService.ts is created
+import { getPortugueseSynopsis } from '../services/TranslationService';
 import { XMarkIcon, PlusIcon, FilmIcon } from './Icons';
 import { translateFormat, translateGenre, translateAniListStatus } from '../utils/translationUtils';
 import { translateAniListSeasonToPortuguese } from '../utils/seasonUtils';
@@ -29,14 +29,15 @@ const AnimeDetailsModal: React.FC<AnimeDetailsModalProps> = ({ isOpen, onClose, 
     if (isOpen && anime?.description) {
       setIsTranslating(true);
       setTranslatedSynopsis(null); // Clear previous
-      const originalSynopsis = stripHtml(anime.description);
-      translateText(originalSynopsis, "pt-BR")
+
+      const animeTitle = anime.title.romaji || anime.title.english || '';
+      getPortugueseSynopsis(anime.id, animeTitle, anime.description)
         .then(translated => {
           setTranslatedSynopsis(translated);
         })
         .catch(error => {
           console.error("Failed to translate synopsis:", error);
-          setTranslatedSynopsis(originalSynopsis); // Fallback to original if translation fails
+          setTranslatedSynopsis(stripHtml(anime.description)); // Fallback to original if translation fails
         })
         .finally(() => {
           setIsTranslating(false);
