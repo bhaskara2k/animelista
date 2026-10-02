@@ -390,7 +390,7 @@ const AchievementsView: React.FC<AchievementsViewProps> = ({ userAchievements, a
                   }`}
               >
                 <CategoryIcon className="w-3.5 h-3.5" />
-                <span>{cat.categoryTitle.split('(')[0].trim()}</span>
+                <span>{cat.categoryTitle}</span>
               </button>
             );
           })}

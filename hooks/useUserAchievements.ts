@@ -130,7 +130,7 @@ export const useUserAchievements = (
             updated_at: new Date().toISOString()
         }));
 
-        const { error } = await supabase.from('achievements').upsert(achievementsToUpsert);
+        const { error } = await supabase.from('achievements').upsert(achievementsToUpsert, { onConflict: 'user_id,achievement_id' });
 
         if (error) {
             console.error("Error saving achievements to Supabase:", error);

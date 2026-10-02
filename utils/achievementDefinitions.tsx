@@ -187,7 +187,7 @@ export const achievementDefinitions: AchievementDefinition[] = [
   // --------------------------------------------------------------------------
   {
     categoryId: 'soloLevelingEps',
-    categoryTitle: 'Ascensão de Caçador (Solo Leveling)',
+    categoryTitle: 'Ascensão de Caçador',
     categoryIcon: BoltIcon,
     calculateProgress: calculateTotalEpisodesWatched,
     tiers: [
@@ -198,7 +198,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 50,
         xpReward: 50,
         rank: 'E',
-        animeReference: 'Solo Leveling',
       },
       {
         id: 'WATCHED_150_EPISODES',
@@ -207,7 +206,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 150,
         xpReward: 100,
         rank: 'D',
-        animeReference: 'Solo Leveling',
       },
       {
         id: 'WATCHED_350_EPISODES',
@@ -216,7 +214,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 350,
         xpReward: 150,
         rank: 'C',
-        animeReference: 'Solo Leveling',
       },
       {
         id: 'WATCHED_750_EPISODES',
@@ -225,7 +222,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 750,
         xpReward: 250,
         rank: 'B',
-        animeReference: 'Solo Leveling',
       },
       {
         id: 'WATCHED_1500_EPISODES',
@@ -234,7 +230,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 1500,
         xpReward: 400,
         rank: 'A',
-        animeReference: 'Solo Leveling',
       },
       {
         id: 'WATCHED_3000_EPISODES',
@@ -243,7 +238,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 3000,
         xpReward: 650,
         rank: 'S',
-        animeReference: 'Solo Leveling',
       },
       {
         id: 'WATCHED_5000_EPISODES',
@@ -252,7 +246,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 5000,
         xpReward: 1000,
         rank: 'S',
-        animeReference: 'Solo Leveling',
       },
       {
         id: 'WATCHED_8000_EPISODES',
@@ -261,7 +254,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 8000,
         xpReward: 2000,
         rank: 'MONARCH',
-        animeReference: 'Solo Leveling',
       },
       {
         id: 'WATCHED_12000_EPISODES',
@@ -270,7 +262,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 12000,
         xpReward: 3500,
         rank: 'MONARCH',
-        animeReference: 'Solo Leveling',
       },
       {
         id: 'WATCHED_16000_EPISODES',
@@ -279,7 +270,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 16000,
         xpReward: 5000,
         rank: 'MONARCH',
-        animeReference: 'Solo Leveling',
       },
       {
         id: 'WATCHED_20000_EPISODES',
@@ -288,7 +278,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 20000,
         xpReward: 7500,
         rank: 'MONARCH',
-        animeReference: 'Solo Leveling',
       },
     ],
   },
@@ -298,7 +287,7 @@ export const achievementDefinitions: AchievementDefinition[] = [
   // --------------------------------------------------------------------------
   {
     categoryId: 'shonenJourney',
-    categoryTitle: 'A Grande Jornada (Shonen & Clássicos)',
+    categoryTitle: 'A Grande Jornada',
     categoryIcon: CrownIcon,
     calculateProgress: calculateCompletedAnimes,
     tiers: [
@@ -317,7 +306,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 5,
         xpReward: 100,
         rank: 'D',
-        animeReference: 'One Piece',
       },
       {
         id: 'COMPLETED_15_ANIMES',
@@ -326,7 +314,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 15,
         xpReward: 180,
         rank: 'C',
-        animeReference: 'Naruto',
       },
       {
         id: 'COMPLETED_25_ANIMES',
@@ -335,7 +322,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 25,
         xpReward: 280,
         rank: 'C',
-        animeReference: 'Dragon Ball',
       },
       {
         id: 'COMPLETED_50_ANIMES',
@@ -344,7 +330,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 50,
         xpReward: 450,
         rank: 'B',
-        animeReference: 'Bleach',
       },
       {
         id: 'COMPLETED_75_ANIMES',
@@ -353,7 +338,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 75,
         xpReward: 650,
         rank: 'A',
-        animeReference: 'One Piece',
       },
       {
         id: 'COMPLETED_100_ANIMES',
@@ -362,7 +346,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 100,
         xpReward: 1000,
         rank: 'A',
-        animeReference: 'Black Clover',
       },
       {
         id: 'COMPLETED_150_ANIMES',
@@ -371,7 +354,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 150,
         xpReward: 1500,
         rank: 'S',
-        animeReference: 'One Piece',
       },
       {
         id: 'COMPLETED_200_ANIMES',
@@ -380,7 +362,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 200,
         xpReward: 2200,
         rank: 'S',
-        animeReference: 'Death Note',
       },
       {
         id: 'COMPLETED_300_ANIMES',
@@ -389,7 +370,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 300,
         xpReward: 3500,
         rank: 'MONARCH',
-        animeReference: 'Dragon Ball Super',
       },
       {
         id: 'COMPLETED_400_ANIMES',
@@ -398,7 +378,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 400,
         xpReward: 5000,
         rank: 'MONARCH',
-        animeReference: 'Fire Force',
       },
       {
         id: 'COMPLETED_500_ANIMES',
@@ -407,7 +386,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 500,
         xpReward: 7000,
         rank: 'MONARCH',
-        animeReference: 'Gintama',
       },
     ],
   },
@@ -417,7 +395,7 @@ export const achievementDefinitions: AchievementDefinition[] = [
   // --------------------------------------------------------------------------
   {
     categoryId: 'genreLicense',
-    categoryTitle: 'Licença Hunter de Gêneros (Hunter x Hunter)',
+    categoryTitle: 'Licença Hunter de Gêneros',
     categoryIcon: AcademicCapIcon,
     calculateProgress: calculateUniqueGenresExplored,
     tiers: [
@@ -428,7 +406,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 2,
         xpReward: 40,
         rank: 'E',
-        animeReference: 'Hunter x Hunter',
       },
       {
         id: 'EXPLORED_5_GENRES',
@@ -437,7 +414,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 5,
         xpReward: 90,
         rank: 'D',
-        animeReference: 'Hunter x Hunter',
       },
       {
         id: 'EXPLORED_8_GENRES',
@@ -446,7 +422,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 8,
         xpReward: 160,
         rank: 'C',
-        animeReference: 'Hunter x Hunter',
       },
       {
         id: 'EXPLORED_12_GENRES',
@@ -455,7 +430,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 12,
         xpReward: 280,
         rank: 'B',
-        animeReference: 'Hunter x Hunter',
       },
       {
         id: 'EXPLORED_16_GENRES',
@@ -464,7 +438,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 16,
         xpReward: 500,
         rank: 'A',
-        animeReference: 'Hunter x Hunter',
       },
       {
         id: 'EXPLORED_22_GENRES',
@@ -473,7 +446,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 22,
         xpReward: 1000,
         rank: 'S',
-        animeReference: 'Hunter x Hunter',
       },
     ],
   },
@@ -483,7 +455,7 @@ export const achievementDefinitions: AchievementDefinition[] = [
   // --------------------------------------------------------------------------
   {
     categoryId: 'deathNote',
-    categoryTitle: 'Caderno de Julgamento (Death Note)',
+    categoryTitle: 'Caderno de Julgamento',
     categoryIcon: BookOpenIcon,
     calculateProgress: calculateRatedAnimes,
     tiers: [
@@ -494,7 +466,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 1,
         xpReward: 30,
         rank: 'E',
-        animeReference: 'Death Note',
       },
       {
         id: 'RATED_5_ANIMES',
@@ -503,7 +474,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 5,
         xpReward: 80,
         rank: 'D',
-        animeReference: 'Death Note',
       },
       {
         id: 'RATED_15_ANIMES',
@@ -512,7 +482,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 15,
         xpReward: 150,
         rank: 'C',
-        animeReference: 'Death Note',
       },
       {
         id: 'RATED_30_ANIMES',
@@ -521,7 +490,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 30,
         xpReward: 250,
         rank: 'B',
-        animeReference: 'Death Note',
       },
       {
         id: 'RATED_60_ANIMES',
@@ -530,7 +498,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 60,
         xpReward: 450,
         rank: 'A',
-        animeReference: 'Death Note',
       },
       {
         id: 'RATED_100_ANIMES',
@@ -539,7 +506,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 100,
         xpReward: 850,
         rank: 'S',
-        animeReference: 'Death Note',
       },
       {
         id: 'RATED_180_ANIMES',
@@ -548,7 +514,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 180,
         xpReward: 1500,
         rank: 'MONARCH',
-        animeReference: 'Death Note',
       },
       {
         id: 'RATED_250_ANIMES',
@@ -557,7 +522,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 250,
         xpReward: 2200,
         rank: 'MONARCH',
-        animeReference: 'Death Note',
       },
       {
         id: 'RATED_350_ANIMES',
@@ -566,7 +530,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 350,
         xpReward: 3500,
         rank: 'MONARCH',
-        animeReference: 'Death Note',
       },
     ],
   },
@@ -576,7 +539,7 @@ export const achievementDefinitions: AchievementDefinition[] = [
   // --------------------------------------------------------------------------
   {
     categoryId: 'hallOfFame',
-    categoryTitle: 'Hall da Fama (Obras-Primas Nota 10)',
+    categoryTitle: 'Hall da Fama (Nota 10)',
     categoryIcon: StarIcon,
     calculateProgress: calculatePerfectScoreAnimes,
     tiers: [
@@ -644,7 +607,7 @@ export const achievementDefinitions: AchievementDefinition[] = [
   // --------------------------------------------------------------------------
   {
     categoryId: 'onePunchMarathon',
-    categoryTitle: 'Treino de Maratonista (One Punch Man)',
+    categoryTitle: 'Treino de Maratonista',
     categoryIcon: FireIcon,
     calculateProgress: calculateWatchingAnimes,
     tiers: [
@@ -655,7 +618,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 1,
         xpReward: 30,
         rank: 'E',
-        animeReference: 'One Punch Man',
       },
       {
         id: 'WATCHING_3_ANIMES',
@@ -664,7 +626,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 3,
         xpReward: 70,
         rank: 'D',
-        animeReference: 'One Punch Man',
       },
       {
         id: 'WATCHING_6_ANIMES',
@@ -673,7 +634,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 6,
         xpReward: 160,
         rank: 'C',
-        animeReference: 'One Punch Man',
       },
       {
         id: 'WATCHING_12_ANIMES',
@@ -682,7 +642,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 12,
         xpReward: 400,
         rank: 'A',
-        animeReference: 'One Punch Man',
       },
       {
         id: 'WATCHING_20_ANIMES',
@@ -691,7 +650,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 20,
         xpReward: 900,
         rank: 'S',
-        animeReference: 'One Punch Man',
       },
     ],
   },
@@ -753,7 +711,7 @@ export const achievementDefinitions: AchievementDefinition[] = [
   // --------------------------------------------------------------------------
   {
     categoryId: 'isekaiDomain',
-    categoryTitle: 'O Chamado do Isekai & Fantasia',
+    categoryTitle: 'O Chamado do Isekai',
     categoryIcon: SparklesIcon,
     calculateProgress: calculateIsekaiFantasyAnimes,
     tiers: [
@@ -764,7 +722,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 1,
         xpReward: 40,
         rank: 'E',
-        animeReference: 'Konosuba',
       },
       {
         id: 'ISEKAI_5_ANIMES',
@@ -773,7 +730,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 5,
         xpReward: 90,
         rank: 'D',
-        animeReference: 'Mushoku Tensei',
       },
       {
         id: 'ISEKAI_12_ANIMES',
@@ -782,7 +738,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 12,
         xpReward: 180,
         rank: 'C',
-        animeReference: 'Re:Zero',
       },
       {
         id: 'ISEKAI_25_ANIMES',
@@ -791,7 +746,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 25,
         xpReward: 350,
         rank: 'B',
-        animeReference: 'Tensei Slime',
       },
       {
         id: 'ISEKAI_45_ANIMES',
@@ -800,7 +754,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 45,
         xpReward: 650,
         rank: 'A',
-        animeReference: 'Overlord',
       },
       {
         id: 'ISEKAI_75_ANIMES',
@@ -809,7 +762,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 75,
         xpReward: 1200,
         rank: 'S',
-        animeReference: 'Kage no Jitsuryokusha',
       },
       {
         id: 'ISEKAI_110_ANIMES',
@@ -818,7 +770,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 110,
         xpReward: 2500,
         rank: 'MONARCH',
-        animeReference: 'No Game No Life',
       },
     ],
   },
@@ -828,7 +779,7 @@ export const achievementDefinitions: AchievementDefinition[] = [
   // --------------------------------------------------------------------------
   {
     categoryId: 'jujutsuDomain',
-    categoryTitle: 'Expansão de Domínio & Shonen Sombrio',
+    categoryTitle: 'Expansão de Domínio',
     categoryIcon: ShieldIcon,
     calculateProgress: calculateActionSupernaturalAnimes,
     tiers: [
@@ -839,7 +790,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 3,
         xpReward: 50,
         rank: 'E',
-        animeReference: 'Demon Slayer',
       },
       {
         id: 'ACTION_10_ANIMES',
@@ -848,7 +798,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 10,
         xpReward: 120,
         rank: 'D',
-        animeReference: 'Chainsaw Man',
       },
       {
         id: 'ACTION_25_ANIMES',
@@ -857,7 +806,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 25,
         xpReward: 260,
         rank: 'C',
-        animeReference: 'Jujutsu Kaisen',
       },
       {
         id: 'ACTION_50_ANIMES',
@@ -866,7 +814,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 50,
         xpReward: 550,
         rank: 'B',
-        animeReference: 'Attack on Titan',
       },
       {
         id: 'ACTION_80_ANIMES',
@@ -875,7 +822,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 80,
         xpReward: 950,
         rank: 'A',
-        animeReference: 'Tokyo Ghoul',
       },
       {
         id: 'ACTION_120_ANIMES',
@@ -884,7 +830,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 120,
         xpReward: 1800,
         rank: 'S',
-        animeReference: 'Jujutsu Kaisen',
       },
       {
         id: 'ACTION_180_ANIMES',
@@ -893,7 +838,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 180,
         xpReward: 3200,
         rank: 'MONARCH',
-        animeReference: 'Jujutsu Kaisen',
       },
     ],
   },
@@ -903,7 +847,7 @@ export const achievementDefinitions: AchievementDefinition[] = [
   // --------------------------------------------------------------------------
   {
     categoryId: 'sciFiSteins',
-    categoryTitle: 'Operação Skuld (Sci-Fi, Mecha & Mente)',
+    categoryTitle: 'Operação Skuld',
     categoryIcon: RocketLaunchIcon,
     calculateProgress: calculateSciFiMechaPsychologicalAnimes,
     tiers: [
@@ -914,7 +858,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 1,
         xpReward: 40,
         rank: 'E',
-        animeReference: 'Steins;Gate',
       },
       {
         id: 'SCIFI_6_ANIMES',
@@ -923,7 +866,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 6,
         xpReward: 110,
         rank: 'D',
-        animeReference: 'Evangelion',
       },
       {
         id: 'SCIFI_15_ANIMES',
@@ -932,7 +874,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 15,
         xpReward: 240,
         rank: 'C',
-        animeReference: 'Code Geass',
       },
       {
         id: 'SCIFI_30_ANIMES',
@@ -941,7 +882,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 30,
         xpReward: 450,
         rank: 'B',
-        animeReference: 'Cowboy Bebop',
       },
       {
         id: 'SCIFI_55_ANIMES',
@@ -950,7 +890,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 55,
         xpReward: 900,
         rank: 'A',
-        animeReference: 'Gurren Lagann',
       },
       {
         id: 'SCIFI_90_ANIMES',
@@ -959,7 +898,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 90,
         xpReward: 1800,
         rank: 'S',
-        animeReference: 'Steins;Gate',
       },
     ],
   },
@@ -969,7 +907,7 @@ export const achievementDefinitions: AchievementDefinition[] = [
   // --------------------------------------------------------------------------
   {
     categoryId: 'romanceLoveIsWar',
-    categoryTitle: 'Guerra do Amor & Emoção (Romance & Drama)',
+    categoryTitle: 'Guerra do Amor & Emoção',
     categoryIcon: HeartIcon,
     calculateProgress: calculateRomanceDramaSliceOfLifeAnimes,
     tiers: [
@@ -980,7 +918,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 1,
         xpReward: 35,
         rank: 'E',
-        animeReference: 'Kaguya-sama',
       },
       {
         id: 'ROMANCE_6_ANIMES',
@@ -989,7 +926,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 6,
         xpReward: 100,
         rank: 'D',
-        animeReference: 'Toradora!',
       },
       {
         id: 'ROMANCE_15_ANIMES',
@@ -998,7 +934,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 15,
         xpReward: 220,
         rank: 'C',
-        animeReference: 'Your Lie in April',
       },
       {
         id: 'ROMANCE_30_ANIMES',
@@ -1007,7 +942,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 30,
         xpReward: 420,
         rank: 'B',
-        animeReference: 'Your Name (Kimi no Na wa)',
       },
       {
         id: 'ROMANCE_50_ANIMES',
@@ -1016,7 +950,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 50,
         xpReward: 800,
         rank: 'A',
-        animeReference: 'Oshi no Ko',
       },
       {
         id: 'ROMANCE_80_ANIMES',
@@ -1025,7 +958,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 80,
         xpReward: 1600,
         rank: 'S',
-        animeReference: 'Kaguya-sama: Love Is War',
       },
     ],
   },
@@ -1035,7 +967,7 @@ export const achievementDefinitions: AchievementDefinition[] = [
   // --------------------------------------------------------------------------
   {
     categoryId: 'sportsBlueLock',
-    categoryTitle: 'O Egoísta Máximo (Esportes & Superação)',
+    categoryTitle: 'O Egoísta Máximo',
     categoryIcon: ShieldIcon,
     calculateProgress: calculateSportsAnimes,
     tiers: [
@@ -1046,7 +978,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 1,
         xpReward: 35,
         rank: 'E',
-        animeReference: 'Haikyuu!!',
       },
       {
         id: 'SPORTS_3_ANIMES',
@@ -1055,7 +986,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 3,
         xpReward: 90,
         rank: 'D',
-        animeReference: 'Haikyuu!!',
       },
       {
         id: 'SPORTS_7_ANIMES',
@@ -1064,7 +994,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 7,
         xpReward: 200,
         rank: 'C',
-        animeReference: 'Kuroko no Basket',
       },
       {
         id: 'SPORTS_14_ANIMES',
@@ -1073,7 +1002,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 14,
         xpReward: 450,
         rank: 'B',
-        animeReference: 'Hajime no Ippo',
       },
       {
         id: 'SPORTS_25_ANIMES',
@@ -1082,7 +1010,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 25,
         xpReward: 1100,
         rank: 'S',
-        animeReference: 'Blue Lock',
       },
     ],
   },
@@ -1092,7 +1019,7 @@ export const achievementDefinitions: AchievementDefinition[] = [
   // --------------------------------------------------------------------------
   {
     categoryId: 'comedyGintama',
-    categoryTitle: 'Yorozuya da Maratona (Comédia & Humor)',
+    categoryTitle: 'Yorozuya da Maratona',
     categoryIcon: FaceSmileIcon,
     calculateProgress: calculateComedyAnimes,
     tiers: [
@@ -1103,7 +1030,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 2,
         xpReward: 40,
         rank: 'E',
-        animeReference: 'Gintama',
       },
       {
         id: 'COMEDY_8_ANIMES',
@@ -1112,7 +1038,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 8,
         xpReward: 120,
         rank: 'D',
-        animeReference: 'KonoSuba',
       },
       {
         id: 'COMEDY_20_ANIMES',
@@ -1121,7 +1046,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 20,
         xpReward: 280,
         rank: 'C',
-        animeReference: 'Saiki K.',
       },
       {
         id: 'COMEDY_40_ANIMES',
@@ -1130,7 +1054,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 40,
         xpReward: 550,
         rank: 'B',
-        animeReference: 'Spy x Family',
       },
       {
         id: 'COMEDY_70_ANIMES',
@@ -1139,7 +1062,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 70,
         xpReward: 1000,
         rank: 'A',
-        animeReference: 'Gintama',
       },
       {
         id: 'COMEDY_110_ANIMES',
@@ -1148,7 +1070,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 110,
         xpReward: 2000,
         rank: 'S',
-        animeReference: 'Gintama',
       },
     ],
   },
@@ -1158,7 +1079,7 @@ export const achievementDefinitions: AchievementDefinition[] = [
   // --------------------------------------------------------------------------
   {
     categoryId: 'longRunnerMarathon',
-    categoryTitle: 'Titãs dos 50+ Episódios (Odisseias Épicas)',
+    categoryTitle: 'Titãs dos 50+ Episódios',
     categoryIcon: FilmIcon,
     calculateProgress: calculateLongRunnerAnimes,
     tiers: [
@@ -1169,7 +1090,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 1,
         xpReward: 70,
         rank: 'D',
-        animeReference: 'One Piece',
       },
       {
         id: 'LONGRUN_3_ANIMES',
@@ -1178,7 +1098,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 3,
         xpReward: 180,
         rank: 'C',
-        animeReference: 'Naruto',
       },
       {
         id: 'LONGRUN_6_ANIMES',
@@ -1187,7 +1106,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 6,
         xpReward: 400,
         rank: 'B',
-        animeReference: 'Bleach',
       },
       {
         id: 'LONGRUN_10_ANIMES',
@@ -1196,7 +1114,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 10,
         xpReward: 850,
         rank: 'A',
-        animeReference: 'Dragon Ball Z',
       },
       {
         id: 'LONGRUN_16_ANIMES',
@@ -1205,7 +1122,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 16,
         xpReward: 1800,
         rank: 'S',
-        animeReference: 'Detective Conan',
       },
       {
         id: 'LONGRUN_25_ANIMES',
@@ -1214,7 +1130,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 25,
         xpReward: 3200,
         rank: 'MONARCH',
-        animeReference: 'One Piece',
       },
     ],
   },
@@ -1224,7 +1139,7 @@ export const achievementDefinitions: AchievementDefinition[] = [
   // --------------------------------------------------------------------------
   {
     categoryId: 'shortMasterpieces',
-    categoryTitle: 'Speedrun de 1 Cour (Obras de 12-13 EPs)',
+    categoryTitle: 'Speedrun de 1 Cour',
     categoryIcon: BoltIcon,
     calculateProgress: calculateShortAnimes,
     tiers: [
@@ -1243,7 +1158,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 8,
         xpReward: 110,
         rank: 'D',
-        animeReference: 'Cyberpunk: Edgerunners',
       },
       {
         id: 'SHORT_20_ANIMES',
@@ -1252,7 +1166,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 20,
         xpReward: 260,
         rank: 'C',
-        animeReference: 'Erased',
       },
       {
         id: 'SHORT_40_ANIMES',
@@ -1261,7 +1174,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 40,
         xpReward: 550,
         rank: 'B',
-        animeReference: 'Madoka Magica',
       },
       {
         id: 'SHORT_70_ANIMES',
@@ -1270,7 +1182,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 70,
         xpReward: 1000,
         rank: 'A',
-        animeReference: 'Violet Evergarden',
       },
       {
         id: 'SHORT_120_ANIMES',
@@ -1279,7 +1190,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 120,
         xpReward: 2000,
         rank: 'S',
-        animeReference: 'Death Parade',
       },
     ],
   },
@@ -1289,7 +1199,7 @@ export const achievementDefinitions: AchievementDefinition[] = [
   // --------------------------------------------------------------------------
   {
     categoryId: 'simulcastWatcher',
-    categoryTitle: 'Guardião do Simulcast & Lançamentos',
+    categoryTitle: 'Guardião do Simulcast',
     categoryIcon: TvIcon,
     calculateProgress: calculateSimulcastAiringAnimes,
     tiers: [
@@ -1300,7 +1210,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 1,
         xpReward: 30,
         rank: 'E',
-        animeReference: 'Frieren',
       },
       {
         id: 'SIMULCAST_4_ANIMES',
@@ -1309,7 +1218,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 4,
         xpReward: 90,
         rank: 'D',
-        animeReference: 'DanDaDan',
       },
       {
         id: 'SIMULCAST_8_ANIMES',
@@ -1318,7 +1226,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 8,
         xpReward: 220,
         rank: 'C',
-        animeReference: 'Demon Slayer',
       },
       {
         id: 'SIMULCAST_15_ANIMES',
@@ -1327,7 +1234,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 15,
         xpReward: 500,
         rank: 'B',
-        animeReference: 'Chainsaw Man',
       },
       {
         id: 'SIMULCAST_25_ANIMES',
@@ -1345,7 +1251,7 @@ export const achievementDefinitions: AchievementDefinition[] = [
   // --------------------------------------------------------------------------
   {
     categoryId: 'theOtakuChronicler',
-    categoryTitle: 'O Cronista Otaku (Anotações & Resenhas)',
+    categoryTitle: 'O Cronista Otaku',
     categoryIcon: PencilSquareIcon,
     calculateProgress: calculateAnimesWithNotes,
     tiers: [
@@ -1364,7 +1270,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 5,
         xpReward: 90,
         rank: 'D',
-        animeReference: 'Bakuman',
       },
       {
         id: 'NOTES_15_ANIMES',
@@ -1373,7 +1278,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 15,
         xpReward: 240,
         rank: 'C',
-        animeReference: 'JoJo\'s Bizarre Adventure',
       },
       {
         id: 'NOTES_30_ANIMES',
@@ -1407,7 +1311,7 @@ export const achievementDefinitions: AchievementDefinition[] = [
   // --------------------------------------------------------------------------
   {
     categoryId: 'theBacklogPlan',
-    categoryTitle: 'A Gaveta dos Desejos (Planejados)',
+    categoryTitle: 'A Gaveta dos Desejos',
     categoryIcon: BookmarkIcon,
     calculateProgress: calculatePlannedBacklogAnimes,
     tiers: [
@@ -1434,7 +1338,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 35,
         xpReward: 160,
         rank: 'C',
-        animeReference: 'Fate Series',
       },
       {
         id: 'BACKLOG_70_ANIMES',
@@ -1443,7 +1346,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 70,
         xpReward: 350,
         rank: 'B',
-        animeReference: 'Monogatari Series',
       },
       {
         id: 'BACKLOG_120_ANIMES',
@@ -1469,7 +1371,7 @@ export const achievementDefinitions: AchievementDefinition[] = [
   // --------------------------------------------------------------------------
   {
     categoryId: 'audioVersatility',
-    categoryTitle: 'Poliglota dos Animes (Áudio & Vozes)',
+    categoryTitle: 'Poliglota dos Animes',
     categoryIcon: LanguageIcon,
     calculateProgress: calculateAudioConfiguredAnimes,
     tiers: [
@@ -1488,7 +1390,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 5,
         xpReward: 80,
         rank: 'D',
-        animeReference: 'Yu Yu Hakusho',
       },
       {
         id: 'AUDIO_15_ANIMES',
@@ -1497,7 +1398,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 15,
         xpReward: 180,
         rank: 'C',
-        animeReference: 'Dragon Ball Z',
       },
       {
         id: 'AUDIO_35_ANIMES',
@@ -1506,7 +1406,6 @@ export const achievementDefinitions: AchievementDefinition[] = [
         target: 35,
         xpReward: 380,
         rank: 'B',
-        animeReference: 'Cavaleiros do Zodíaco',
       },
       {
         id: 'AUDIO_70_ANIMES',
