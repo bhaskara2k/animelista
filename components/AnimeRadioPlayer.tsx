@@ -20,7 +20,10 @@ import {
   ChevronUpIcon,
   XMarkIcon,
   SparklesIcon,
-  FireIcon
+  FireIcon,
+  BoltIcon,
+  HistoryIcon,
+  LibraryMusicIcon
 } from './Icons';
 
 interface AnimeRadioPlayerProps {
@@ -61,28 +64,33 @@ export const AnimeRadioPlayer: React.FC<AnimeRadioPlayerProps> = ({
   const [searchResults, setSearchResults] = useState<RadioTrack[]>([]);
   const [isSearching, setIsSearching] = useState<boolean>(false);
 
-  // Category filter in legendary tab
-  const [legendaryFilter, setLegendaryFilter] = useState<'all' | 'black_clover' | 'shonen' | 'recent'>('all');
+  // Category filter & quick search in legendary tab
+  const [legendaryFilter, setLegendaryFilter] = useState<'all' | 'black_clover' | 'shonen' | 'recent' | 'classics'>('all');
+  const [openingsSearch, setOpeningsSearch] = useState<string>('');
 
   // Filtered legendary openings
   const filteredLegendaryTracks = useMemo(() => {
+    let list = ICONIC_OPENINGS;
     if (legendaryFilter === 'black_clover') {
-      return ICONIC_OPENINGS.filter(t => t.animeTitle.toLowerCase().includes('black clover'));
+      list = list.filter(t => t.category === 'black_clover' || t.animeTitle.toLowerCase().includes('black clover'));
+    } else if (legendaryFilter === 'shonen') {
+      list = list.filter(t => t.category === 'shonen');
+    } else if (legendaryFilter === 'recent') {
+      list = list.filter(t => t.category === 'recent');
+    } else if (legendaryFilter === 'classics') {
+      list = list.filter(t => t.category === 'classics');
     }
-    if (legendaryFilter === 'shonen') {
-      return ICONIC_OPENINGS.filter(t => 
-        ['naruto', 'one piece', 'bleach', 'hunter x hunter', 'dragon ball', 'shingeki', 'jujutsu']
-          .some(s => t.animeTitle.toLowerCase().includes(s))
+
+    if (openingsSearch.trim()) {
+      const q = openingsSearch.trim().toLowerCase();
+      list = list.filter(t => 
+        t.title.toLowerCase().includes(q) || 
+        t.animeTitle.toLowerCase().includes(q) || 
+        t.artist.toLowerCase().includes(q)
       );
     }
-    if (legendaryFilter === 'recent') {
-      return ICONIC_OPENINGS.filter(t => 
-        ['solo leveling', 'frieren', 'oshi no ko', 'chainsaw man', 'demon slayer']
-          .some(s => t.animeTitle.toLowerCase().includes(s))
-      );
-    }
-    return ICONIC_OPENINGS;
-  }, [legendaryFilter]);
+    return list;
+  }, [legendaryFilter, openingsSearch]);
 
   // Combined playlist for next/prev navigation
   const currentPlaylist = useMemo<RadioTrack[]>(() => {
@@ -299,12 +307,17 @@ export const AnimeRadioPlayer: React.FC<AnimeRadioPlayerProps> = ({
                 <img 
                   src={currentTrack.coverUrl} 
                   alt={currentTrack.title}
+                  referrerPolicy="no-referrer"
                   className={`w-full h-full object-cover ${isPlaying ? 'animate-spin' : ''}`}
                   style={{ animationDuration: '6s' }}
+                  onError={(e) => {
+                    (e.currentTarget as HTMLElement).style.display = 'none';
+                  }}
                 />
-              ) : (
+              ) : null}
+              <div className="absolute inset-0 -z-10 flex items-center justify-center">
                 <MusicalNoteIcon className="w-4 h-4 text-white" />
-              )}
+              </div>
             </div>
 
             {/* Track Info Preview */}
@@ -414,26 +427,46 @@ export const AnimeRadioPlayer: React.FC<AnimeRadioPlayerProps> = ({
               {/* Tab 1: Legendary Openings */}
               {activeTab === 'legendary' && (
                 <div className="space-y-2.5">
-                  {/* Category sub-filter chips */}
-                  <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
-                    {[
-                      { id: 'all', label: 'Todas as Aberturas' },
-                      { id: 'black_clover', label: '🍀 Black Clover (OP 1-13)' },
-                      { id: 'shonen', label: '⚔️ Clássicos Shonen' },
-                      { id: 'recent', label: '🔥 Sucessos Recentes' },
-                    ].map(btn => (
-                      <button
-                        key={btn.id}
-                        onClick={() => setLegendaryFilter(btn.id as any)}
-                        className={`flex-shrink-0 px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all ${
-                          legendaryFilter === btn.id
-                            ? 'bg-purple-500/30 text-purple-300 border border-purple-500/50'
-                            : 'bg-white/5 text-slate-400 hover:text-white'
-                        }`}
-                      >
-                        {btn.label}
-                      </button>
-                    ))}
+                  {/* Category sub-filter chips & live search */}
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 pb-1">
+                    <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs scrollbar-none">
+                      {[
+                        { id: 'all', label: 'Todas as Aberturas', icon: LibraryMusicIcon },
+                        { id: 'black_clover', label: 'Black Clover (OP 1-13)', icon: SparklesIcon },
+                        { id: 'shonen', label: 'Clássicos Shonen', icon: FireIcon },
+                        { id: 'recent', label: 'Lançamentos & Recentes', icon: BoltIcon },
+                        { id: 'classics', label: 'Nostalgia & Anos 90/00', icon: HistoryIcon },
+                      ].map(btn => {
+                        const Icon = btn.icon;
+                        const isSelected = legendaryFilter === btn.id;
+                        return (
+                          <button
+                            key={btn.id}
+                            onClick={() => setLegendaryFilter(btn.id as any)}
+                            className={`flex items-center gap-1.5 flex-shrink-0 px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all ${
+                              isSelected
+                                ? 'bg-purple-600/40 text-purple-200 border border-purple-400/60 shadow-sm'
+                                : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 border border-transparent'
+                            }`}
+                          >
+                            <Icon className="w-3.5 h-3.5" />
+                            <span>{btn.label}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    {/* Quick filter within the 130+ songs */}
+                    <div className="relative min-w-[170px] sm:w-52">
+                      <SearchIcon className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                      <input
+                        type="text"
+                        value={openingsSearch}
+                        onChange={(e) => setOpeningsSearch(e.target.value)}
+                        placeholder="Filtrar anime ou música..."
+                        className="w-full bg-slate-900/90 border border-white/10 rounded-lg pl-8 pr-2.5 py-1 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-purple-400"
+                      />
+                    </div>
                   </div>
 
                   {/* Openings Grid */}
@@ -452,10 +485,20 @@ export const AnimeRadioPlayer: React.FC<AnimeRadioPlayerProps> = ({
                         >
                           <div className="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0 bg-slate-900 border border-white/10 relative">
                             {track.coverUrl ? (
-                              <img src={track.coverUrl} alt={track.title} className="w-full h-full object-cover" />
-                            ) : (
-                              <div className="w-full h-full flex items-center justify-center text-xs">🎵</div>
-                            )}
+                              <img 
+                                src={track.coverUrl} 
+                                alt={track.title} 
+                                referrerPolicy="no-referrer"
+                                loading="lazy"
+                                className="w-full h-full object-cover" 
+                                onError={(e) => {
+                                  (e.currentTarget as HTMLElement).style.display = 'none';
+                                }}
+                              />
+                            ) : null}
+                            <div className="absolute inset-0 -z-10 flex items-center justify-center bg-gradient-to-br from-purple-900/50 to-slate-900">
+                              <MusicalNoteIcon className="w-4 h-4 text-purple-400/80" />
+                            </div>
                             {isCurrent && isPlaying && (
                               <div className="absolute inset-0 bg-purple-900/60 backdrop-blur-xs flex items-center justify-center">
                                 <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
@@ -553,12 +596,22 @@ export const AnimeRadioPlayer: React.FC<AnimeRadioPlayerProps> = ({
                                 : 'bg-white/5 border-white/5 hover:border-white/20 hover:bg-white/10'
                             }`}
                           >
-                            <div className="w-9 h-9 rounded-lg overflow-hidden flex-shrink-0 bg-slate-900 border border-white/10">
+                            <div className="w-9 h-9 rounded-lg overflow-hidden flex-shrink-0 bg-slate-900 border border-white/10 relative">
                               {track.coverUrl ? (
-                                <img src={track.coverUrl} alt={track.title} className="w-full h-full object-cover" />
-                              ) : (
-                                <div className="w-full h-full flex items-center justify-center text-xs">🎵</div>
-                              )}
+                                <img 
+                                  src={track.coverUrl} 
+                                  alt={track.title} 
+                                  referrerPolicy="no-referrer"
+                                  loading="lazy"
+                                  className="w-full h-full object-cover" 
+                                  onError={(e) => {
+                                    (e.currentTarget as HTMLElement).style.display = 'none';
+                                  }}
+                                />
+                              ) : null}
+                              <div className="absolute inset-0 -z-10 flex items-center justify-center bg-gradient-to-br from-amber-600/30 to-slate-900">
+                                <MusicalNoteIcon className="w-3.5 h-3.5 text-amber-400" />
+                              </div>
                             </div>
                             <div className="min-w-0 flex-grow">
                               <div className="flex items-center gap-1">
@@ -594,12 +647,19 @@ export const AnimeRadioPlayer: React.FC<AnimeRadioPlayerProps> = ({
               <div className="flex items-center gap-3 w-full sm:w-auto">
                 <div className="relative w-12 h-12 rounded-xl overflow-hidden flex-shrink-0 bg-slate-900 border border-purple-500/40 shadow-md">
                   {currentTrack?.coverUrl ? (
-                    <img src={currentTrack.coverUrl} alt={currentTrack.title} className="w-full h-full object-cover" />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-purple-700 to-cyan-700 text-white">
-                      <MusicalNoteIcon className="w-6 h-6" />
-                    </div>
-                  )}
+                    <img 
+                      src={currentTrack.coverUrl} 
+                      alt={currentTrack.title} 
+                      referrerPolicy="no-referrer"
+                      className="w-full h-full object-cover" 
+                      onError={(e) => {
+                        (e.currentTarget as HTMLElement).style.display = 'none';
+                      }}
+                    />
+                  ) : null}
+                  <div className="absolute inset-0 -z-10 flex items-center justify-center bg-gradient-to-br from-purple-700 to-cyan-700 text-white">
+                    <MusicalNoteIcon className="w-6 h-6" />
+                  </div>
                   {isLoading && (
                     <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
                       <span className="w-4 h-4 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin" />

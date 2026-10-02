@@ -293,6 +293,14 @@ export const PauseIcon: React.FC<{ className?: string, opticalSize?: number }> =
   <MaterialSymbol iconName="pause" className={className} filled opticalSize={opticalSize} />
 );
 
+export const HistoryIcon: React.FC<{ className?: string, opticalSize?: number }> = ({ className = "w-5 h-5", opticalSize }) => (
+  <MaterialSymbol iconName="history" className={className} opticalSize={opticalSize} />
+);
 
+export const LibraryMusicIcon: React.FC<{ className?: string, opticalSize?: number }> = ({ className = "w-5 h-5", opticalSize }) => (
+  <MaterialSymbol iconName="library_music" className={className} opticalSize={opticalSize} />
+);
 
-
+export const DiscIcon: React.FC<{ className?: string, opticalSize?: number }> = ({ className = "w-5 h-5", opticalSize }) => (
+  <MaterialSymbol iconName="album" className={className} opticalSize={opticalSize} />
+);
