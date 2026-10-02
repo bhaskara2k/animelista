@@ -155,7 +155,7 @@ const StatisticsView: React.FC<StatisticsViewProps> = ({ stats, username }) => {
             Distribuição por Status
           </h3>
           <div className="space-y-5">
-            {Object.entries(stats.statusCounts).map(([status, count]) => (
+            {(Object.entries(stats.statusCounts) as [AnimeStatus, number][]).map(([status, count]) => (
               count > 0 && (
                 <div key={status} className="group cursor-default">
                   <div className="flex justify-between items-end mb-1">

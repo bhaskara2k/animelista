@@ -198,11 +198,12 @@ export const AnimeRadioPlayer: React.FC<AnimeRadioPlayerProps> = ({
 
   // Trigger search on AnimeThemes API
   const handlePerformSearch = async (term: string) => {
-    if (!term.trim()) return;
+    if (!term.trim()) return [];
     setIsSearching(true);
     const results = await searchAnimeOpenings(term);
     setSearchResults(results);
     setIsSearching(false);
+    return results;
   };
 
   // Handle request to play opening of an anime from another screen

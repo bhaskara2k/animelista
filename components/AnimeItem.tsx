@@ -30,7 +30,7 @@ const getAudioTypeStyle = (audioType?: AudioType): string => {
   }
 };
 
-const AnimeItem: React.FC<AnimeItemProps> = ({ anime, onUpdateEpisode, onDelete, onEdit, onSetStatus, onSetRating, listDensity }) => {
+const AnimeItem: React.FC<AnimeItemProps> = ({ anime, onUpdateEpisode, onDelete, onEdit, onSetStatus, onSetRating, listDensity, onPlayOpening }) => {
   const [detailsExpanded, setDetailsExpanded] = useState(false);
   const [showXpGain, setShowXpGain] = useState(false);
 
