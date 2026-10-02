@@ -30,8 +30,10 @@ import * as GamificationService from './services/GamificationService';
 import { Toast, ToastContainer } from './components/ToastNotification';
 
 
+import AnimeRadioPlayer from './components/AnimeRadioPlayer';
+
 import { translateGenre } from './utils/translationUtils';
-import { PlusIcon, CalendarDaysIcon, ListBulletIcon, TrophyIcon, ChartPieIcon, QuestionMarkCircleIcon, BellIcon, BellSlashIcon, Cog6ToothIcon, ArrowUpTrayIcon, SparklesIcon, MedalIcon, SearchIcon, UsersIcon, ChevronDownIcon } from './components/Icons';
+import { PlusIcon, CalendarDaysIcon, ListBulletIcon, TrophyIcon, ChartPieIcon, QuestionMarkCircleIcon, BellIcon, BellSlashIcon, Cog6ToothIcon, ArrowUpTrayIcon, SparklesIcon, MedalIcon, SearchIcon, UsersIcon, ChevronDownIcon, RadioIcon } from './components/Icons';
 import { prioritizeStreamingPlatforms } from './utils/platformUtils';
 import { calculateDateForSpecificEpisode } from './utils/episodeUtils';
 
@@ -200,6 +202,14 @@ const MainApp: React.FC = () => {
   const [filterAudioType, setFilterAudioType] = useState<AudioType | 'ALL'>('ALL');
   const [filterNoSpecificAiring, setFilterNoSpecificAiring] = useState<boolean>(false);
   const [sortOption, setSortOption] = useState<SortOption>('default');
+
+  const [isRadioPlayerOpen, setIsRadioPlayerOpen] = useState(false);
+  const [radioInitialAnime, setRadioInitialAnime] = useState<string | null>(null);
+
+  const handlePlayAnimeOpening = useCallback((animeTitle: string) => {
+    setRadioInitialAnime(animeTitle);
+    setIsRadioPlayerOpen(true);
+  }, []);
 
 
   useEffect(() => {
@@ -1131,6 +1141,18 @@ const MainApp: React.FC = () => {
               </button>
 
               <button
+                onClick={() => setIsRadioPlayerOpen(prev => !prev)}
+                className={`flex-shrink-0 w-10 h-10 rounded-lg transition-all duration-200 flex items-center justify-center ${isRadioPlayerOpen
+                  ? 'bg-gradient-to-r from-purple-500 to-cyan-500 text-white shadow-lg shadow-purple-500/30 scale-105'
+                  : 'bg-white/10 text-white/70 hover:bg-white/20 hover:text-white border border-white/10 hover:border-white/30'
+                  }`}
+                aria-pressed={isRadioPlayerOpen}
+                title="Rádio Anime & Aberturas"
+              >
+                <RadioIcon className="w-5 h-5" />
+              </button>
+
+              <button
                 onClick={() => setIsSettingsModalOpen(true)}
                 className="flex-shrink-0 w-10 h-10 rounded-lg transition-all duration-200 flex items-center justify-center bg-white/10 text-white/70 hover:bg-white/20 hover:text-white border border-white/10 hover:border-white/30"
                 title="Configurações"
@@ -1206,6 +1228,7 @@ const MainApp: React.FC = () => {
               onSetStatus={handleSetStatus}
               onSetRating={handleSetRating}
               listDensity={appSettings.listDensity}
+              onPlayOpening={handlePlayAnimeOpening}
             />
           )}
           {listSubView === 'upcoming' && (
@@ -1330,6 +1353,14 @@ const MainApp: React.FC = () => {
           currentSettings={appSettings}
           onUpdateSettings={handleUpdateSettings}
           animeList={animeList}
+        />
+
+        <AnimeRadioPlayer
+          userAnimeList={animeList}
+          initialAnimeToPlay={radioInitialAnime}
+          onClearInitialAnime={() => setRadioInitialAnime(null)}
+          isOpen={isRadioPlayerOpen}
+          onToggleOpen={setIsRadioPlayerOpen}
         />
 
       </div>

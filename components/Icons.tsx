@@ -265,5 +265,34 @@ export const SparkIcon: React.FC<{ className?: string }> = ({ className = "w-3 h
   </svg>
 );
 
+export const RadioIcon: React.FC<{ className?: string, opticalSize?: number }> = ({ className = "w-5 h-5", opticalSize }) => (
+  <MaterialSymbol iconName="radio" className={className} opticalSize={opticalSize} />
+);
+
+export const MusicalNoteIcon: React.FC<{ className?: string, opticalSize?: number }> = ({ className = "w-5 h-5", opticalSize }) => (
+  <MaterialSymbol iconName="music_note" className={className} opticalSize={opticalSize} />
+);
+
+export const SpeakerWaveIcon: React.FC<{ className?: string, opticalSize?: number }> = ({ className = "w-5 h-5", opticalSize }) => (
+  <MaterialSymbol iconName="volume_up" className={className} opticalSize={opticalSize} />
+);
+
+export const SpeakerXMarkIcon: React.FC<{ className?: string, opticalSize?: number }> = ({ className = "w-5 h-5", opticalSize }) => (
+  <MaterialSymbol iconName="volume_off" className={className} opticalSize={opticalSize} />
+);
+
+export const BackwardIcon: React.FC<{ className?: string, opticalSize?: number }> = ({ className = "w-5 h-5", opticalSize }) => (
+  <MaterialSymbol iconName="skip_previous" className={className} opticalSize={opticalSize} />
+);
+
+export const ForwardIcon: React.FC<{ className?: string, opticalSize?: number }> = ({ className = "w-5 h-5", opticalSize }) => (
+  <MaterialSymbol iconName="skip_next" className={className} opticalSize={opticalSize} />
+);
+
+export const PauseIcon: React.FC<{ className?: string, opticalSize?: number }> = ({ className = "w-5 h-5", opticalSize }) => (
+  <MaterialSymbol iconName="pause" className={className} filled opticalSize={opticalSize} />
+);
+
+
 
 

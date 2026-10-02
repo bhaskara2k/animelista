@@ -3,7 +3,7 @@ import { Anime, AnimeStatus, AudioType, ListDensityOption } from '../types';
 import ProgressBar from './ProgressBar';
 import StarRating from './StarRating';
 import StreamingPlatformDisplay from './StreamingPlatformDisplay';
-import { PencilIcon, TrashIcon, PlusIcon, MinusIcon, ChevronDownIcon, ChevronUpIcon, EyeIcon, BellAlertIcon } from './Icons';
+import { PencilIcon, TrashIcon, PlusIcon, MinusIcon, ChevronDownIcon, ChevronUpIcon, EyeIcon, BellAlertIcon, MusicalNoteIcon } from './Icons';
 import { calculateExpectedEpisodes } from '../utils/episodeUtils';
 import { parseAndFormatToDDMMYYYY } from '../utils/dateUtils'; 
 import { triggerHapticFeedback } from '../utils/hapticUtils';
@@ -16,6 +16,7 @@ interface AnimeItemProps {
   onSetStatus: (id: string, status: AnimeStatus) => void;
   onSetRating: (id: string, rating: number) => void;
   listDensity: ListDensityOption;
+  onPlayOpening?: (animeTitle: string) => void;
 }
 
 const getAudioTypeStyle = (audioType?: AudioType): string => {
@@ -210,6 +211,15 @@ const AnimeItem: React.FC<AnimeItemProps> = ({ anime, onUpdateEpisode, onDelete,
                 </button>
 
                 <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    {onPlayOpening && (
+                        <button 
+                            onClick={(e) => { e.stopPropagation(); onPlayOpening(anime.title); }} 
+                            className="p-2 text-gray-400 hover:text-purple-400 hover:bg-purple-500/10 rounded-lg transition-all"
+                            title="Ouvir Abertura"
+                        >
+                            <MusicalNoteIcon className="w-4 h-4" />
+                        </button>
+                    )}
                     <button 
                         onClick={() => onEdit(anime)} 
                         className="p-2 text-gray-400 hover:text-accent-400 hover:bg-accent-500/10 rounded-lg transition-all"
@@ -287,6 +297,16 @@ const AnimeItem: React.FC<AnimeItemProps> = ({ anime, onUpdateEpisode, onDelete,
                                 <span className="text-xs uppercase tracking-wider text-gray-500 font-semibold block mb-1">Notas</span>
                                 <p className="bg-black/20 p-2 rounded-md italic text-gray-400 text-xs">{anime.notes}</p>
                             </div>
+                        )}
+
+                        {onPlayOpening && (
+                            <button
+                                onClick={() => onPlayOpening(anime.title)}
+                                className="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-purple-600/20 hover:bg-purple-600/30 text-purple-300 border border-purple-500/30 text-xs font-bold transition-all shadow-sm"
+                            >
+                                <MusicalNoteIcon className="w-4 h-4" />
+                                <span>Ouvir Aberturas & Músicas</span>
+                            </button>
                         )}
                     </div>
                 </div>

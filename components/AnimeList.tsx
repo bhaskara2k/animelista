@@ -11,6 +11,7 @@ interface AnimeListProps {
   onSetStatus: (id: string, status: AnimeStatus) => void;
   onSetRating: (id: string, rating: number) => void;
   listDensity: ListDensityOption;
+  onPlayOpening?: (animeTitle: string) => void;
 }
 
 const INITIAL_BATCH = 24;
@@ -23,7 +24,8 @@ const AnimeList: React.FC<AnimeListProps> = ({
   onEdit,
   onSetStatus,
   onSetRating,
-  listDensity
+  listDensity,
+  onPlayOpening
 }) => {
   const [visibleCount, setVisibleCount] = useState(INITIAL_BATCH);
   const observerRef = useRef<HTMLDivElement>(null);
@@ -130,6 +132,7 @@ const AnimeList: React.FC<AnimeListProps> = ({
               onSetStatus={onSetStatus}
               onSetRating={onSetRating}
               listDensity={listDensity}
+              onPlayOpening={onPlayOpening}
             />
           </div>
         ))}
